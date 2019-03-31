@@ -1,0 +1,10 @@
+.login-card {
+  margin: auto;
+  margin-top: 150px;
+  min-width: 400px;
+  width: 30%;
+}
+
+.login-card .login-form-button {
+  width: 100%;
+}
