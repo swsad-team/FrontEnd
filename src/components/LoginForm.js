@@ -5,13 +5,19 @@ import {
 import './LoginForm.css'
 
 class LoginForm extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values)
+        this.props.onLoginSuccess()
+      } else {
       }
-    });
+    })
   }
 
   render() {
