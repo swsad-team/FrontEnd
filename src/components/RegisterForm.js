@@ -16,6 +16,7 @@ import {
   DatePicker
 } from 'antd'
 import './RegisterForm.css'
+import { Link } from 'react-router-dom'
 const { Option } = Select
 
 const RegistrationForm = props => {
@@ -58,7 +59,7 @@ const RegistrationForm = props => {
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 6 }
+      sm: { span: 4 }
     },
     wrapperCol: {
       xs: { span: 24 },
@@ -72,8 +73,8 @@ const RegistrationForm = props => {
         offset: 0
       },
       sm: {
-        span: 18,
-        offset: 6
+        span: 20,
+        offset: 2
       }
     }
   }
@@ -302,13 +303,16 @@ const RegistrationForm = props => {
         </Form.Item>
         {AddtionalForm}
         <Form.Item {...tailFormItemLayout}>
-          <Button
-            className="register-form-button"
-            type="primary"
-            htmlType="submit"
-          >
-            注册
-          </Button>
+          <div style={{ display: 'flex' }}>
+            <Link to="/login">已有账号</Link>
+            <Button
+              className="register-form-button"
+              type="primary"
+              htmlType="submit"
+            >
+              注册
+            </Button>
+            </div>
         </Form.Item>
       </Form>
     </Card>
