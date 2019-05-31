@@ -1,29 +1,30 @@
-import axios from 'axios'
+import instance from './instance'
 
-class UserApi {
-  http
-  constructor(url) {
-    this.http = axios.create({
-      baseUrl: url,
-      timeout: 2000,
-    })
-    this.http.interceptors.response.use(function (response) {
-      response.success = true
-      return response
-    }, function (error) {
-      return Promise.reject(error.response ? error.response : error.message)
-    })
-  }
+const prefix = '/users'
 
-  loginUser = async (userData) => {
-    try {
-      return await this.http.post('/login', userData)
-    } catch (error) {
-      return error
-    }
+/**
+ * 用户登陆
+ * @param {String} phoneOrEmail 
+ * @param {String} password 
+ */
+export async function loginUser(phoneOrEmail, password) {
+  try {
+    const respones = await instance.post(`${prefix}/login`, {
+      phoneOrEmail,
+      password
+    })
+    return respones.data
+  } catch (error) {
+    return error
   }
 }
 
-const userApi = new UserApi('/api/user')
-
-export default userApi
+export async function getUserInfo(userId = 0) {
+  const id = userId ? userId : ''
+  try {
+    const respones = await instance.get(`${prefix}/${id}`)
+    return respones.data
+  } catch (error) {
+    return null
+  }
+}

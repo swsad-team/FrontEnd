@@ -1,7 +1,3 @@
-import userApi from './user'
+import * as userApi from './user'
 
-
-
-export default {
-  userApi,
-}
+export { userApi }
