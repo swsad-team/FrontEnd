@@ -1,64 +1,73 @@
-import React from 'react'
-import { Link } from "react-router-dom";
-import {
-  Form, Icon, Input, Button, Checkbox, Card,
-} from 'antd'
+import React, { useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { Form, Icon, Input, Button, Checkbox, Card } from 'antd'
 import './LoginForm.css'
+import { userApi } from '../apis'
+import { UserContext } from '../context';
 
-class LoginForm extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+const LoginForm = props => {
+  const [loaded, setLoaded] = useState(false)
+  const {setLogin} = useContext(UserContext)
+  const handleSubmit = e => {
+    e.preventDefault()
+    props.form.validateFields(async (err, {username, password}) => {
       if (!err) {
-        console.log('Received values of form: ', values)
-        this.props.onLoginSuccess()
+        setLoaded(false)
+        const data = await userApi.loginUser(username, password)
+        if (data) {
+          setLogin(true)
+        }
+        setLoaded(true)
       } else {
+
       }
     })
   }
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Card title="Login" className="login-card">
-        <Form onSubmit={this.handleSubmit} className="login-form">
-          <Form.Item>
-            {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Please input your username!' }],
-            })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
-            })(
-              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(
-              <Checkbox>Remember me</Checkbox>
-            )}
-            {/* <a className="login-form-forgot" href="">Forgot password</a> */}
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              Log in
+  const { getFieldDecorator } = props.form
+  return (
+    <Card title="登陆" className="login-card">
+      <Form onSubmit={handleSubmit} className="login-form">
+        <Form.Item>
+          {getFieldDecorator('username', {
+            rules: [{ required: true, message: '请输入邮箱或电话' }]
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="邮箱或电话"
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: '请输入密码' }]
+          })(
+            <Input
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="密码"
+            />
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('remember', {
+            valuePropName: 'checked',
+            initialValue: true
+          })(<Checkbox>记住我</Checkbox>)}
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            登陆
           </Button>
-            Or <Link to="/register">register now!</Link>
-          </Form.Item>
-        </Form>
-      </Card>
-    );
-  }
+          <Link to="/register">注册</Link>
+        </Form.Item>
+      </Form>
+    </Card>
+  )
 }
 
-const WrappedLoginForm = Form.create({ name: 'normal_login' })(LoginForm);
+const WrappedLoginForm = Form.create({ name: 'login' })(LoginForm)
 
 export default WrappedLoginForm
