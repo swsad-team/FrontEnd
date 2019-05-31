@@ -8,7 +8,7 @@
   background: rgba(255,255,255,.2);
   margin: 16px 28px 16px 0;
   float: left;
-  color: aliceblue;
+  color: black;
   text-align: center;
   line-height: 32px;
 }
@@ -16,4 +16,16 @@
 .logo span {
   width: 100px;
   margin: auto;
+}
+
+.header {
+  background-color: white;
+}
+
+.header .anticon-user {
+  margin-right: 0;
+}
+
+.content {
+  height: 100%;
 }
