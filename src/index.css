@@ -1,11 +1,12 @@
-#root, .layout {
+#root,
+.layout {
   min-height: 100vh;
 }
 
 .layout .logo {
   width: 120px;
-  height: 31px;
-  background: rgba(255,255,255,.2);
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
   margin: 16px 28px 16px 0;
   float: left;
   color: black;
@@ -22,10 +23,21 @@
   background-color: white;
 }
 
+.header .anticon {
+  font-size: 20px;
+}
+
+.ant-menu-submenu-title {
+  line-height: 60px;
+}
+
+
 .header .anticon-user {
   margin-right: 0;
 }
 
-/* .content {
-  height: 100%;
-} */
+.add-task {
+  font-size: 20px;
+}
+
+

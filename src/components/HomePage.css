@@ -1,3 +1,8 @@
-.home-page-section {
-  height: 100%
+.home-page {
+  margin: 50px auto 0 auto;
+  width: 80%;
+}
+
+.home-page .ant-row {
+  margin-bottom: 10px;
 }
