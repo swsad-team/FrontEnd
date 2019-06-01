@@ -14,10 +14,10 @@ const LoginForm = props => {
       if (!err) {
         setLoaded(false)
         const data = await userApi.loginUser(username, password)
+        setLoaded(true)
         if (data) {
           setLogin(true)
         }
-        setLoaded(true)
       } else {
 
       }

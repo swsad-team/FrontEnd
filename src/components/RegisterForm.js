@@ -312,7 +312,7 @@ const RegistrationForm = props => {
             >
               注册
             </Button>
-            </div>
+          </div>
         </Form.Item>
       </Form>
     </Card>
