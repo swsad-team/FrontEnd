@@ -1,69 +1,86 @@
-import React from 'react'
-import { Layout, Menu, Icon } from 'antd'
+import React, { useState } from 'react'
+import { Layout, Menu, Icon, Checkbox, Select, Row, Col } from 'antd'
 import './HomePage.css'
-const { Sider, Content } = Layout
+import TaskList from './TaskList';
+import TaskModal from './TaskModal';
 
-const { SubMenu } = Menu
+const { Option } = Select
 
-class HomePage extends React.Component {
-  render() {
-    return (
-      <Layout className="home-page-section">
-        <Sider width={200} style={{ background: '#fff' }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%', borderRight: 0 }}
-          >
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  subnav 1
-                </span>
-              }
-            >
-              <Menu.Item key="1">option1</Menu.Item>
-              <Menu.Item key="2">option2</Menu.Item>
-              <Menu.Item key="3">option3</Menu.Item>
-              <Menu.Item key="4">option4</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={
-                <span>
-                  <Icon type="laptop" />
-                  subnav 2
-                </span>
-              }
-            >
-              <Menu.Item key="5">option5</Menu.Item>
-              <Menu.Item key="6">option6</Menu.Item>
-              <Menu.Item key="7">option7</Menu.Item>
-              <Menu.Item key="8">option8</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub3"
-              title={
-                <span>
-                  <Icon type="notification" />
-                  subnav 3
-                </span>
-              }
-            >
-              <Menu.Item key="9">option9</Menu.Item>
-              <Menu.Item key="10">option10</Menu.Item>
-              <Menu.Item key="11">option11</Menu.Item>
-              <Menu.Item key="12">option12</Menu.Item>
-            </SubMenu>
-          </Menu>
-        </Sider>
-        <Content style={{ textAlign: 'center' }}>HomePage</Content>
-      </Layout>
-    )
+const CheckAllBox = props => {
+  const { checkedList, setCheckedList, options, withCheckAll = false } = props
+
+  const indeterminate =
+    !!checkedList.length && checkedList.length < options.length
+  const checkAll = checkedList.length === options.length
+
+  const handleChange = checkedList => {
+    setCheckedList(checkedList)
   }
+
+  const onCheckAllChange = e => {
+    setCheckedList(e.target.checked ? options : [])
+  }
+
+  return (
+    <>
+      {withCheckAll && (
+        <Checkbox
+          indeterminate={indeterminate}
+          onChange={onCheckAllChange}
+          checked={checkAll}
+        >
+          全选
+        </Checkbox>
+      )}
+      <Checkbox.Group
+        options={options}
+        value={checkedList}
+        onChange={handleChange}
+      />
+    </>
+  )
+}
+
+const HomePage = props => {
+  const roleOptions = ['我的', '组织', '个人']
+  const defaultRoleList = ['我的']
+  const [roleList, setRoleList] = useState(defaultRoleList)
+  const [taskModal, setTaskModal] = useState({visible: false, task: null})
+  let taskList = []
+  for (let i = 0; i < 10; i++) {
+    taskList.push({
+      id: i,
+      title: `task---${i}`,
+      content: `this is a example content`,
+      reward: i % 5 + 1
+    })
+  }
+  return (
+    <div className="home-page">
+      <Row>
+        <Col span={24}>
+          <CheckAllBox
+            checkedList={roleList}
+            setCheckedList={setRoleList}
+            options={roleOptions}
+            withCheckAll={true}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8}>
+          <Select defaultValue="latest-all">
+            <Option value="latest-all">显示全部</Option>
+            <Option value="latest-day">最近一天</Option>
+            <Option value="latest-weeky">最近一周</Option>
+            <Option value="latest-month">最近一月</Option>
+          </Select>
+        </Col>
+      </Row>
+      <TaskList taskList={taskList} setTaskModal={setTaskModal}/>
+      {taskModal.visible && <TaskModal task={taskModal.task} visible={taskModal.visible} setTaskModal={setTaskModal} />}
+    </div>
+  )
 }
 
 export default HomePage

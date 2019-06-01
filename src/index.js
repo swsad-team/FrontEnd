@@ -7,7 +7,6 @@ import {
   Switch
 } from 'react-router-dom'
 
-
 import './index.css'
 import WrappedLoginForm from './components/LoginForm'
 import WrappedRegistrationForm from './components/RegisterForm'
@@ -55,6 +54,10 @@ function App(props) {
               <Menu.Item key="userInfo">个人信息</Menu.Item>
               <Menu.Item key="logout">退出</Menu.Item>
             </SubMenu>
+            <Menu.Item key="addTask" className="add-task">
+              <Icon type="plus-circle" />
+              发布任务
+            </Menu.Item>
           </Menu>
         </Header>
         <Content className="content">

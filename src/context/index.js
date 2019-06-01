@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react'
 export const UserContext = createContext({})
 
 export const UserProvider = props => {
-  const { login: initLogin, nickname: initNickname, children } = props
+  const { login: initLogin = true, nickname: initNickname, children } = props
   const [login, setLogin] = useState(initLogin)
   const [nickname, setNickname] = useState(initNickname)
 
