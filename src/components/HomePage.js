@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Layout, Menu, Icon, Checkbox, Select, Row, Col } from 'antd'
+import { Route } from 'react-router-dom'
+import { Checkbox, Select, Row, Col } from 'antd'
 import './HomePage.css'
-import TaskList from './TaskList';
-import TaskModal from './TaskModal';
+import TaskList from './TaskList'
+import TaskModal from './TaskModal'
+import NewTaskPage from './NewTask'
 
 const { Option } = Select
 
@@ -41,22 +43,23 @@ const CheckAllBox = props => {
   )
 }
 
-const HomePage = props => {
+const TaskListController = props => {
   const roleOptions = ['我的', '组织', '个人']
   const defaultRoleList = ['我的']
   const [roleList, setRoleList] = useState(defaultRoleList)
-  const [taskModal, setTaskModal] = useState({visible: false, task: null})
+  const [taskModal, setTaskModal] = useState({ visible: false, task: null })
   let taskList = []
   for (let i = 0; i < 10; i++) {
     taskList.push({
       id: i,
       title: `task---${i}`,
       content: `this is a example content`,
-      reward: i % 5 + 1
+      reward: (i % 5) + 1
     })
   }
+
   return (
-    <div className="home-page">
+    <>
       <Row>
         <Col span={24}>
           <CheckAllBox
@@ -77,8 +80,25 @@ const HomePage = props => {
           </Select>
         </Col>
       </Row>
-      <TaskList taskList={taskList} setTaskModal={setTaskModal}/>
-      {taskModal.visible && <TaskModal task={taskModal.task} visible={taskModal.visible} setTaskModal={setTaskModal} />}
+      <TaskList taskList={taskList} setTaskModal={setTaskModal} />
+      {taskModal.visible && (
+        <TaskModal
+          task={taskModal.task}
+          visible={taskModal.visible}
+          setTaskModal={setTaskModal}
+        />
+      )}
+    </>
+  )
+}
+
+const HomePage = props => {
+  const { match } = props
+  console.log(`${match.url}/newTask`)
+  return (
+    <div className="home-page">
+      <Route path="/newTask" component={NewTaskPage} />
+      <Route exact path={match.path} component={TaskListController} />
     </div>
   )
 }
