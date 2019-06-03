@@ -1,20 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-  Card,
-  Radio,
-  DatePicker
-} from 'antd'
+import { Form, Input, Tooltip, Icon, Select, Button, Card, Radio } from 'antd'
 import './RegisterForm.css'
 import { Link } from 'react-router-dom'
 const { Option } = Select

@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Switch
+  Switch,
+  Link
 } from 'react-router-dom'
 
 import './index.css'
@@ -56,7 +57,7 @@ function App(props) {
             </SubMenu>
             <Menu.Item key="addTask" className="add-task">
               <Icon type="plus-circle" />
-              发布任务
+              <Link style={{display: 'inline-block'}} to="/newTask">发布任务</Link>
             </Menu.Item>
           </Menu>
         </Header>
