@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, forwardRef } from 'react'
 import {
   Card,
   Form,
@@ -8,13 +8,53 @@ import {
   Button,
   Alert,
   Radio,
-  Steps
+  Steps,
+  List
 } from 'antd'
 import moment from 'moment'
 import './NewTask.css'
+import CheckAllBox from './CheckAllBox'
 
 const { TextArea } = Input
 const { Step } = Steps
+
+let LimitForm = ({ size, value = [], onChange }, ref) => {
+  const options = ['男', '女', '其他']
+  const [limits, setLimits] = useState(value)
+  const [checkedList, setCheckedList] = useState([])
+  const [grade, setGrade] = useState(null)
+  const handleClick = () => {
+    if (onChange) {
+      const newLimit = { gender: checkedList, grade: grade }
+      onChange(limits.concat(newLimit))
+      setLimits(limits.concat(newLimit))
+      setCheckedList([])
+      setGrade(null)
+    }
+  }
+
+  return (
+    <div ref={ref}>
+      <span>
+        <label>性别:</label>
+        <CheckAllBox
+          withCheckAll={true}
+          options={options}
+          checkedList={checkedList}
+          onChange={setCheckedList}
+        />
+        <label>学号前缀:</label>
+        <InputNumber min={1} max={Math.pow(10, 10) -1 } onChange={setGrade} />
+        <Button onClick={handleClick}>添加</Button>
+      </span>
+      {limits.length !== 0 && <List dataSource={limits}
+        renderItem={item => <List.Item>性别:{item.gender.join('/')} 学号前缀:{item.grade} </List.Item>} />}
+
+    </div>
+  )
+}
+
+LimitForm = forwardRef(LimitForm)
 
 const CommonTaskDetialForm = props => {
   const { onSubmit, formValues } = props
@@ -41,14 +81,16 @@ const CommonTaskDetialForm = props => {
                 message: '请输入任务详情'
               }
             ]
-          })(<TextArea autosize={{ minRows: 2, maxRows: 10 }} />)}
+          })(
+            <TextArea autosize={{ minRows: 2, maxRows: 10 }} maxLength={1000} />
+          )}
         </Form.Item>
         <Form.Item>
           <Button onClick={() => onSubmit(props.form.getFieldsValue(), 'prev')}>
             返回上步
           </Button>
           <Button type="primary" htmlType="submit">
-            下一步
+            发布任务
           </Button>
         </Form.Item>
       </Form>
@@ -128,6 +170,10 @@ const TaskBasicForm = props => {
       options: {
         initialValue: 1
       }
+    },
+    {
+      type: 'limits',
+      options: {}
     }
   ]
 
@@ -176,9 +222,12 @@ const TaskBasicForm = props => {
         <Form.Item label="最多参与人数">
           {commonDecorators['maximumParticipators'](<InputNumber min={1} />)}
         </Form.Item>
+        <Form.Item label="额外限制">
+          {commonDecorators['limits'](<LimitForm />)}
+        </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            发布任务
+            继续填写
           </Button>
         </Form.Item>
       </Form>
@@ -238,12 +287,10 @@ const NewTaskPage = props => {
       )
     },
     {
-      title: '发布任务',
+      title: '完成',
       content: (
         <div>
-          detail
-          <Button onClick={() => prev()}>返回上步</Button>
-          <Button onClick={() => next()}>发布任务</Button>
+          <Button>返回首页</Button>
         </div>
       )
     }

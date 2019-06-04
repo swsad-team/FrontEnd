@@ -1,47 +1,15 @@
 import React, { useState } from 'react'
 import { Route } from 'react-router-dom'
-import { Checkbox, Select, Row, Col } from 'antd'
+import {  Select, Row, Col } from 'antd'
 import './HomePage.css'
 import TaskList from './TaskList'
 import TaskModal from './TaskModal'
 import NewTaskPage from './NewTask'
+import CheckAllBox from './CheckAllBox'
 
 const { Option } = Select
 
-const CheckAllBox = props => {
-  const { checkedList, setCheckedList, options, withCheckAll = false } = props
 
-  const indeterminate =
-    !!checkedList.length && checkedList.length < options.length
-  const checkAll = checkedList.length === options.length
-
-  const handleChange = checkedList => {
-    setCheckedList(checkedList)
-  }
-
-  const onCheckAllChange = e => {
-    setCheckedList(e.target.checked ? options : [])
-  }
-
-  return (
-    <>
-      {withCheckAll && (
-        <Checkbox
-          indeterminate={indeterminate}
-          onChange={onCheckAllChange}
-          checked={checkAll}
-        >
-          全选
-        </Checkbox>
-      )}
-      <Checkbox.Group
-        options={options}
-        value={checkedList}
-        onChange={handleChange}
-      />
-    </>
-  )
-}
 
 const TaskListController = props => {
   const roleOptions = ['我的', '组织', '个人']
@@ -64,7 +32,7 @@ const TaskListController = props => {
         <Col span={24}>
           <CheckAllBox
             checkedList={roleList}
-            setCheckedList={setRoleList}
+            onChange={setRoleList}
             options={roleOptions}
             withCheckAll={true}
           />
