@@ -9,11 +9,13 @@ import {
   Alert,
   Radio,
   Steps,
-  List
+  List,
+  Divider
 } from 'antd'
 import moment from 'moment'
 import './NewTask.css'
 import CheckAllBox from './CheckAllBox'
+import TaskDetails from './TaskDetails'
 
 const { TextArea } = Input
 const { Step } = Steps
@@ -24,8 +26,17 @@ let LimitForm = ({ size, value = [], onChange }, ref) => {
   const [checkedList, setCheckedList] = useState([])
   const [grade, setGrade] = useState(null)
   const handleClick = () => {
-    if (onChange) {
-      const newLimit = { gender: checkedList, grade: grade }
+    const newLimit = { gender: checkedList, grade: grade }
+    if (!(newLimit.gender.length || grade)) {
+      return
+    }
+    const flag = limits.find(item => {
+      return (
+        item.gender.toString() === newLimit.gender.toString() &&
+        item.grade === newLimit.grade
+      )
+    })
+    if (!flag && onChange) {
       onChange(limits.concat(newLimit))
       setLimits(limits.concat(newLimit))
       setCheckedList([])
@@ -44,12 +55,24 @@ let LimitForm = ({ size, value = [], onChange }, ref) => {
           onChange={setCheckedList}
         />
         <label>学号前缀:</label>
-        <InputNumber min={1} max={Math.pow(10, 10) -1 } onChange={setGrade} />
+        <InputNumber
+          min={1}
+          value={grade}
+          max={Math.pow(10, 10) - 1}
+          onChange={setGrade}
+        />
         <Button onClick={handleClick}>添加</Button>
       </span>
-      {limits.length !== 0 && <List dataSource={limits}
-        renderItem={item => <List.Item>性别:{item.gender.join('/')} 学号前缀:{item.grade} </List.Item>} />}
-
+      {limits.length !== 0 && (
+        <List
+          dataSource={limits}
+          renderItem={item => (
+            <List.Item>
+              性别:{item.gender.join('/')} 学号前缀:{item.grade}{' '}
+            </List.Item>
+          )}
+        />
+      )}
     </div>
   )
 }
@@ -266,6 +289,20 @@ const NewTaskPage = props => {
     }
   }
 
+  const typeMap = {
+    title: '标题',
+    isSurvey: '任务类型',
+    'isSurvey-false': '普通任务',
+    'isSurvey-true': '问卷',
+    dueTime: '结束时间',
+    limits: '额外限制',
+    gender: '性别',
+    grade: '学号前缀',
+    reward: '悬赏',
+    maximumParticipators: '最多参与人数',
+    taskDesciption: '任务详情'
+  }
+
   const steps = [
     {
       title: '填写基本信息',
@@ -289,9 +326,13 @@ const NewTaskPage = props => {
     {
       title: '完成',
       content: (
-        <div>
+        <Card>
+          <Divider orientation="left">基本信息</Divider>
+          <TaskDetails values={basicValues} typeMap={typeMap} />
+          <Divider orientation="left">详细信息</Divider>
+          <TaskDetails values={commonTaskDetialValues} typeMap={typeMap} />
           <Button>返回首页</Button>
-        </div>
+        </Card>
       )
     }
   ]
