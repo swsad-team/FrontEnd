@@ -21,7 +21,7 @@ const TaskListController = props => {
     taskList.push({
       id: i,
       title: `task---${i}`,
-      content: `this is a example content`,
+      content: `this is an example content`,
       reward: (i % 5) + 1
     })
   }
@@ -62,7 +62,6 @@ const TaskListController = props => {
 
 const HomePage = props => {
   const { match } = props
-  console.log(`${match.url}/newTask`)
   return (
     <div className="home-page">
       <Route path="/newTask" component={NewTaskPage} />
