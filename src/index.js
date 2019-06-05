@@ -51,14 +51,14 @@ function App(props) {
             mode="horizontal"
             style={{ lineHeight: '64px', float: 'right' }}
           >
-            <SubMenu title={<Icon type="user" />}>
-              <Menu.Item key="userInfo">个人信息</Menu.Item>
-              <Menu.Item key="logout">退出</Menu.Item>
-            </SubMenu>
             <Menu.Item key="addTask" className="add-task">
               <Icon type="plus-circle" />
               <Link style={{display: 'inline-block'}} to="/newTask">发布任务</Link>
             </Menu.Item>
+            <SubMenu title={<Icon type="user" />}>
+              <Menu.Item key="userInfo">个人信息</Menu.Item>
+              <Menu.Item key="logout">退出</Menu.Item>
+            </SubMenu>
           </Menu>
         </Header>
         <Content className="content">
