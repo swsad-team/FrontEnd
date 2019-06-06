@@ -239,7 +239,7 @@ const RegistrationForm = props => {
 
   const PersonalForm = (
     <>
-      <Form.Item label="姓名">
+      <Form.Item label="真实姓名">
         {additionalDecorators['name'](<Input />)}
       </Form.Item>
       <Form.Item label="出生年份">
@@ -267,17 +267,11 @@ const RegistrationForm = props => {
   return (
     <Card title="注册" className="register-card">
       <Form {...formItemLayout} onSubmit={handleSubmit}>
-        <Form.Item
-          label={
-            <span>
-              昵称
-              <Tooltip title="在社区中显示的名称">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          }
-        >
-          {commonDecorators['nickname'](<Input />)}
+        <Form.Item label="邮箱">
+          {commonDecorators['email'](<Input />)}
+        </Form.Item>
+        <Form.Item label="电话号码">
+          {commonDecorators['phone'](<Input />)}
         </Form.Item>
         <Form.Item label="密码">
           {commonDecorators['password'](<Input type="password" />)}
@@ -287,11 +281,17 @@ const RegistrationForm = props => {
             <Input type="password" onBlur={handleConfirmBlur} />
           )}
         </Form.Item>
-        <Form.Item label="邮箱">
-          {commonDecorators['email'](<Input />)}
-        </Form.Item>
-        <Form.Item label="电话号码">
-          {commonDecorators['phone'](<Input />)}
+        <Form.Item
+          label={
+            <span>
+              名称
+              <Tooltip title="在社区中显示的名称">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+          }
+        >
+          {commonDecorators['nickname'](<Input />)}
         </Form.Item>
         <Form.Item label="账号类型">
           {commonDecorators['isOrganization'](
