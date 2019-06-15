@@ -1,0 +1,43 @@
+.title {}
+
+.content {
+  margin: 20px;
+}
+
+.content>* {
+  margin: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+
+.participantList>* {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.participantList>*:last-child {
+  border-bottom: 0px;
+}
+
+.participantItem {
+  position: relative;
+  height: 60px;
+  line-height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.participantItem>button {
+  position: relative;
+  right: 0;
+}
+
+
+.description {
+  margin-left: 50px;
+  margin-right: 50px;
+}
