@@ -27,9 +27,6 @@ function TaskList({ tasks }) {
 }
 
 function TaskItem({ task, onSelect, onClick, expand = false }) {
-  const itemClass = classNames(styles.taskItem, {
-    [styles.expand]: expand
-  })
   const expandContent = (
     <div className={styles.expandContent}>
       <Descriptions>
@@ -40,6 +37,7 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
         <Descriptions.Item label="参加人数">
           {task.participants.length}
         </Descriptions.Item>
+        <Descriptions.Item label="悬赏金">{task.reward}</Descriptions.Item>
         <Descriptions.Item label="开始时间">
           {moment(task.startTime).format('YYYY-MM-DD HH:mm')}
         </Descriptions.Item>
@@ -49,20 +47,27 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
       </Descriptions>
     </div>
   )
-  const getButton = <Button onClick={onClick}>GET</Button>
+  const handleClick = e => {
+    console.log(e)
+    e.stopPropagation()
+  }
+  const itemClass = classNames(styles.taskItem, {
+    [styles.expand]: expand
+  })
+  const getButton = <Button onClick={handleClick}>GET</Button>
   const endButton = <Button disabled>已结束</Button>
   const attendButton = <Button disabled>已参加</Button>
   const joinButton = <Button disabled>已完成</Button>
   return (
     <div className={itemClass}>
-      <div className={styles.info} onClick={() => onSelect(!expand)}>
-        <span>
-          <Icon theme="filled" style={{ color: '#f6c247' }} type="pay-circle" />
+      <div className={styles.info} onClick={e => onSelect(!expand)}>
+        <span className={styles.reward}>
+          <Icon theme="filled" type="pay-circle" />
           {3}
         </span>
         <span className={styles.title}>{task.title}</span>
         <span className={styles.type}>
-          {task.isQuestionnaire ? '问卷' : '任务'}
+          {task.isQuestionnaire ? '调查问卷' : '其他任务'}
         </span>
         <span className={styles.publisher}>{task.publisher} </span>
         <span className={styles.date}>
@@ -76,11 +81,7 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
 }
 
 TaskList.propTypes = {
-  tasks: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired
-    })
-  ).isRequired,
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClick: PropTypes.func
 }
 
