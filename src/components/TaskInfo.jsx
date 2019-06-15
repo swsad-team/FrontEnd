@@ -1,4 +1,4 @@
-import { Button, Descriptions } from 'antd'
+import { Button, Descriptions, Popconfirm } from 'antd'
 
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -11,7 +11,14 @@ function TaskInfo({ task, onComplete }) {
     <div className={styles.participantItem}>
       {name}
       {isFinished ? (
-        <Button onClick={handleComplete(uid)}>完成任务</Button>
+        <Popconfirm
+          title="此操作不可撤销"
+          onConfirm={handleComplete(uid)}
+          okText="确定"
+          cancelText="取消"
+        >
+          <Button>完成任务</Button>
+        </Popconfirm>
       ) : (
         <Button disabled>已完成</Button>
       )}
@@ -29,6 +36,7 @@ function TaskInfo({ task, onComplete }) {
         <Descriptions.Item label="参加人数">
           {task.participants.length}
         </Descriptions.Item>
+        <Descriptions.Item label="悬赏金">{task.reward}</Descriptions.Item>
         <Descriptions.Item label="开始时间">
           {moment(task.startTime).format('YYYY-MM-DD HH:mm')}
         </Descriptions.Item>
