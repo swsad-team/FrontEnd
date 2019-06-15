@@ -1,0 +1,57 @@
+:root {
+  --transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  --transition-duration: 0.3s;
+}
+
+.taskItem {
+  background-color: #ffffff;
+  margin: 10px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8px;
+  transition: all var(--transition-duration) var(--transition-timing-function);
+  cursor: pointer;
+}
+
+.taskItem:hover {
+  transform: scale(1.1, 1.1)
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.info>* {
+  margin-right: 10px;
+}
+
+.info>*:last-child {
+  margin-right: 0;
+}
+
+.taskList {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.expand {
+  overflow: hidden;
+  height: 160px;
+}
+
+.expandContent>* {
+  height: 20px;
+}
+
+.title {}
+
+.type {}
+
+.publisher {}
+
+.date {}
