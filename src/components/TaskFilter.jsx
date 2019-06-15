@@ -28,7 +28,7 @@ function TaskFilter({
           onChange={e => {
             if (e.target.checked) {
               handleChange({
-                f: selectedFilters.push(val)
+                f: selectedFilters.concat(val)
               })
             } else {
               handleChange({
@@ -73,7 +73,7 @@ TaskFilter.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.string),
   sorts: PropTypes.arrayOf(PropTypes.string),
   selectedFilters: PropTypes.arrayOf(PropTypes.string),
-  selectedSort: PropTypes.arrayOf(PropTypes.string)
+  selectedSort: PropTypes.string
 }
 
 export default TaskFilter
