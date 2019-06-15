@@ -1,14 +1,16 @@
-import { Button, Icon } from 'antd'
+import { Button, Descriptions, Icon } from 'antd'
 import React, { useState } from 'react'
 
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import moment from 'moment'
 import styles from './TaskList.module.css'
 
 function TaskList({ tasks }) {
   const [select, setSelect] = useState(null)
   const handleSelect = index => expand => {
     if (expand) setSelect(index)
+    else setSelect(null)
   }
   return (
     <div className={styles.taskList}>
@@ -30,15 +32,27 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
   })
   const expandContent = (
     <div className={styles.expandContent}>
-      <div>description ········</div>
-      <div>共需多少人</div>
-      <div>发布日</div>
-      <div>结束日</div>
+      <Descriptions>
+        <Descriptions.Item label="描述">{task.description}</Descriptions.Item>
+        <Descriptions.Item label="需要人数">
+          {task.numOfPeople}
+        </Descriptions.Item>
+        <Descriptions.Item label="参加人数">
+          {task.participants.length}
+        </Descriptions.Item>
+        <Descriptions.Item label="开始时间">
+          {moment(task.startTime).format('YYYY-MM-DD HH:mm')}
+        </Descriptions.Item>
+        <Descriptions.Item label="结束时间">
+          {moment(task.endTime).format('YYYY-MM-DD HH:mm')}
+        </Descriptions.Item>
+      </Descriptions>
     </div>
   )
   const getButton = <Button onClick={onClick}>GET</Button>
   const endButton = <Button disabled>已结束</Button>
   const attendButton = <Button disabled>已参加</Button>
+  const joinButton = <Button disabled>已完成</Button>
   return (
     <div className={itemClass}>
       <div className={styles.info} onClick={() => onSelect(!expand)}>
@@ -46,10 +60,14 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
           <Icon theme="filled" style={{ color: '#f6c247' }} type="pay-circle" />
           {3}
         </span>
-        <span className={styles.title}>标题</span>
-        <span className={styles.type}>类型</span>
-        <span className={styles.publisher}>发布者 </span>
-        <span className={styles.date}>日期</span>
+        <span className={styles.title}>{task.title}</span>
+        <span className={styles.type}>
+          {task.isQuestionnaire ? '问卷' : '任务'}
+        </span>
+        <span className={styles.publisher}>{task.publisher} </span>
+        <span className={styles.date}>
+          {moment(task.endTime).format('YYYY-MM-DD HH:mm')}
+        </span>
         {getButton}
       </div>
       {expand ? expandContent : null}
