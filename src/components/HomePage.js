@@ -6,6 +6,8 @@ import TaskList from './TaskList'
 import TaskModal from './TaskModal'
 import NewTaskPage from './NewTask'
 import CheckAllBox from './CheckAllBox'
+import FillSurveyPage from './FIllSurveyPage';
+
 
 const { Option } = Select
 
@@ -64,6 +66,7 @@ const HomePage = props => {
   const { match } = props
   return (
     <div className="home-page">
+      <Route path="/task/:taskId" component={FillSurveyPage} />
       <Route path="/newTask" component={NewTaskPage} />
       <Route exact path={match.path} component={TaskListController} />
     </div>
