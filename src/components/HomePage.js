@@ -1,76 +1,60 @@
-import React, { useState } from 'react'
-import { Route } from 'react-router-dom'
-import {  Select, Row, Col } from 'antd'
 import './HomePage.css'
-import TaskList from './TaskList'
-import TaskModal from './TaskModal'
-import NewTaskPage from './NewTask'
-import CheckAllBox from './CheckAllBox'
-import FillSurveyPage from './FIllSurveyPage';
 
+import { Icon, Layout, Menu } from 'antd'
+import { NavLink, Route, Switch } from 'react-router-dom'
 
-const { Option } = Select
+import AllTaskList from './AllTaskList'
+import React from 'react'
 
+const { Sider, Content } = Layout
 
+const { SubMenu } = Menu
 
-const TaskListController = props => {
-  const roleOptions = ['我的', '组织', '个人']
-  const defaultRoleList = ['我的']
-  const [roleList, setRoleList] = useState(defaultRoleList)
-  const [taskModal, setTaskModal] = useState({ visible: false, task: null })
-  let taskList = []
-  for (let i = 0; i < 10; i++) {
-    taskList.push({
-      id: i,
-      title: `task---${i}`,
-      content: `this is an example content`,
-      reward: (i % 5) + 1
-    })
+class HomePage extends React.Component {
+  render() {
+    return (
+      <Layout className="home-page-section">
+        <Sider collapsible width={200} style={{ background: '#fff' }}>
+          <Menu
+            mode="inline"
+            defaultSelectedKeys={['1']}
+            defaultOpenKeys={['sub1']}
+            style={{ height: '100%', borderRight: 0 }}
+          >
+            <Menu.Item key="1">
+              <NavLink to="/tasks/all">
+                <Icon type="appstore" />
+                <span>所有任务</span>
+              </NavLink>
+            </Menu.Item>
+            <SubMenu
+              key="sub2"
+              title={
+                <NavLink to="/">
+                  <span>
+                    <Icon type="user" />
+                    <span>我的任务</span>
+                  </span>
+                </NavLink>
+              }
+            >
+              <Menu.Item key="5">我发布的</Menu.Item>
+              <Menu.Item key="6">我参与的</Menu.Item>
+              <Menu.Item key="7">已结束</Menu.Item>
+            </SubMenu>
+          </Menu>
+        </Sider>
+        <Content className="home-page-content">
+          <div>
+            <Switch>
+              <Route path="/" component={AllTaskList} />
+              <Route path="/tasks/all" component={AllTaskList} />
+            </Switch>
+          </div>
+        </Content>
+      </Layout>
+    )
   }
-
-  return (
-    <>
-      <Row>
-        <Col span={24}>
-          <CheckAllBox
-            checkedList={roleList}
-            onChange={setRoleList}
-            options={roleOptions}
-            withCheckAll={true}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col span={8}>
-          <Select defaultValue="latest-all">
-            <Option value="latest-all">显示全部</Option>
-            <Option value="latest-day">最近一天</Option>
-            <Option value="latest-weeky">最近一周</Option>
-            <Option value="latest-month">最近一月</Option>
-          </Select>
-        </Col>
-      </Row>
-      <TaskList taskList={taskList} setTaskModal={setTaskModal} />
-      {taskModal.visible && (
-        <TaskModal
-          task={taskModal.task}
-          visible={taskModal.visible}
-          setTaskModal={setTaskModal}
-        />
-      )}
-    </>
-  )
-}
-
-const HomePage = props => {
-  const { match } = props
-  return (
-    <div className="home-page">
-      <Route path="/task/:taskId" component={FillSurveyPage} />
-      <Route path="/newTask" component={NewTaskPage} />
-      <Route exact path={match.path} component={TaskListController} />
-    </div>
-  )
 }
 
 export default HomePage
