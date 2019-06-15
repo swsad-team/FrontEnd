@@ -1,8 +1,20 @@
 import React, { useState, forwardRef } from 'react'
-import { Form, Button, Card, Radio, DatePicker, InputNumber, Alert, Input, List } from 'antd'
+import {
+  Form,
+  Button,
+  Card,
+  Radio,
+  DatePicker,
+  InputNumber,
+  Alert,
+  Input,
+  List
+} from 'antd'
 
 import moment from 'moment'
-import CheckAllBox from './CheckAllBox';
+import CheckAllBox from './CheckAllBox'
+
+const { TextArea } = Input
 
 let LimitForm = ({ value = [], onChange }, ref) => {
   const options = ['男', '女', '其他']
@@ -64,7 +76,7 @@ let LimitForm = ({ value = [], onChange }, ref) => {
 LimitForm = forwardRef(LimitForm)
 
 const TaskBasicForm = props => {
-  const { onSubmit, formValues } = props
+  const { onSubmit, formValues, onTypeChange } = props
   const [tipTime, setTipTime] = useState('')
   const handleSubmit = e => {
     e.preventDefault()
@@ -134,6 +146,18 @@ const TaskBasicForm = props => {
     {
       type: 'limits',
       options: {}
+    },
+    {
+      type: 'taskDescription',
+      options: {
+        initialValue: formValues['taskDescription'],
+        rules: [
+          {
+            required: true,
+            message: '请输入任务详情'
+          }
+        ]
+      }
     }
   ]
 
@@ -148,6 +172,8 @@ const TaskBasicForm = props => {
   commonFields.forEach(field => {
     commonDecorators[field.type] = getFieldDecorator(field.type, field.options)
   })
+
+  const isSurvey = props.form.getFieldsValue(['isSurvey']).isSurvey
   return (
     <Card title="任务" className="task-card">
       <Form onSubmit={handleSubmit} className="login-form">
@@ -156,7 +182,7 @@ const TaskBasicForm = props => {
         </Form.Item>
         <Form.Item label="任务类型">
           {commonDecorators['isSurvey'](
-            <Radio.Group>
+            <Radio.Group onChange={e => onTypeChange({ ...props.form.getFieldsValue(), isSurvey: e.target.value })}>
               <Radio value={false}>普通任务</Radio>
               <Radio value={true}>问卷</Radio>
             </Radio.Group>
@@ -181,12 +207,20 @@ const TaskBasicForm = props => {
         <Form.Item label="最多参与人数">
           {commonDecorators['maximumParticipators'](<InputNumber min={1} />)}
         </Form.Item>
-        <Form.Item label="额外限制">
+        {/* <Form.Item label="额外限制">
           {commonDecorators['limits'](<LimitForm />)}
+        </Form.Item> */}
+        <Form.Item label="任务详情">
+          {commonDecorators['taskDescription'](
+            <TextArea
+              autosize={{ minRows: 2, maxRows: 10 }}
+              maxLength={1000}
+            />
+          )}
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            继续填写
+            {isSurvey ? '继续填写': '发布任务'}
           </Button>
         </Form.Item>
       </Form>

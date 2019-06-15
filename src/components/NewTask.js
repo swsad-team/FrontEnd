@@ -7,54 +7,7 @@ import TaskDetails from './TaskDetails'
 import CreateSurvey, { SurveyList } from './CreateSurvey'
 import WrappedTaskBasicForm from './TaskBasicForm'
 
-const { TextArea } = Input
 const { Step } = Steps
-
-const CommonTaskDetialForm = props => {
-  const { onSubmit, formValues } = props
-  const { getFieldDecorator } = props.form
-  const handleSubmit = e => {
-    e.preventDefault()
-    props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        // TODO: connet register api
-        console.log('Received values of form: ', values)
-        onSubmit(values)
-      }
-    })
-  }
-  return (
-    <Card title="任务">
-      <Form onSubmit={handleSubmit}>
-        <Form.Item label="任务描述">
-          {getFieldDecorator('taskDesciption', {
-            initialValue: formValues['taskDesciption'],
-            rules: [
-              {
-                required: true,
-                message: '请输入任务详情'
-              }
-            ]
-          })(
-            <TextArea autosize={{ minRows: 2, maxRows: 10 }} maxLength={1000} />
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button onClick={() => onSubmit(props.form.getFieldsValue(), 'prev')}>
-            返回上步
-          </Button>
-          <Button type="primary" htmlType="submit">
-            发布任务
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
-  )
-}
-
-const WrappedCommonTaskDetialForm = Form.create({ name: 'task_basic' })(
-  CommonTaskDetialForm
-)
 
 const NewTaskPage = props => {
   const [basicValues, setBasicValues] = useState({})
@@ -76,6 +29,11 @@ const NewTaskPage = props => {
     next()
   }
 
+  const handleTypeChange = values => {
+    console.log(values)
+    setBasicValues(values)
+  }
+ 
   const handleCommonDetialSubmit = (values, command = 'next') => {
     setCommonTaskDetialValues(values)
     // TODO: do something
@@ -87,7 +45,6 @@ const NewTaskPage = props => {
   }
 
   const handleAddQuestion = value => {
-    console.log(surveyData)
     if (surveyData.some(item => item.title === value.title)) {
       message.error('问题已存在')
       return false
@@ -99,12 +56,11 @@ const NewTaskPage = props => {
   }
 
   const handleRemoveQuestion = index => {
+    console.log('remove')
     setSurveyData(surveyData.filter((item, _index) => _index !== index))
   }
 
   const handleSurveySubmit = () => {
-    // TODO:
-    console.log(surveyData)
     next()
   }
 
@@ -119,54 +75,53 @@ const NewTaskPage = props => {
     grade: '学号前缀',
     reward: '悬赏',
     maximumParticipators: '最多参与人数',
-    taskDesciption: '任务详情'
+    taskDescription: '任务详情'
   }
 
-  const steps = [
-    {
-      title: '填写基本信息',
-      content: (
-        <WrappedTaskBasicForm
-          formValues={basicValues}
-          onSubmit={handleBasicSubmit}
-        />
-      )
-    },
-    {
-      title: '填写任务详情',
-      content: basicValues.isSurvey ? (
-        <CreateSurvey
-          onSubmit={handleSurveySubmit}
-          onPrev={() => prev()}
-          onChange={handleAddQuestion}
-          onRemove={handleRemoveQuestion}
-          surveyData={surveyData}
-        />
-      ) : (
-        <WrappedCommonTaskDetialForm
-          formValues={commonTaskDetialValues}
-          onSubmit={handleCommonDetialSubmit}
-          prev={prev}
-        />
-      )
-    },
-    {
-      title: '完成',
-      content: (
-        <Card>
-          <Divider orientation="left">基本信息</Divider>
-          <TaskDetails values={basicValues} typeMap={typeMap} />
-          <Divider orientation="left">详细信息</Divider>
-          {basicValues.isSurvey ? (
-            <SurveyList dataSource={surveyData} />
-          ) : (
-            <TaskDetails values={commonTaskDetialValues} typeMap={typeMap} />
-          )}
-          <Button>返回首页</Button>
-        </Card>
-      )
-    }
-  ]
+  const basciPage = {
+    title: '填写基本信息',
+    content: (
+      <WrappedTaskBasicForm
+        onTypeChange={handleTypeChange}
+        formValues={basicValues}
+        onSubmit={handleBasicSubmit}
+      />
+    )
+  }
+
+  const surveyPage = {
+    title: '填写问卷',
+    content: (
+      <CreateSurvey
+        onSubmit={handleSurveySubmit}
+        onPrev={() => prev()}
+        onChange={handleAddQuestion}
+        onRemove={handleRemoveQuestion}
+        surveyData={surveyData}
+      />
+    )
+  }
+
+  const confirmPage = {
+    title: '完成',
+    content: (
+      <Card>
+        <Divider orientation="left">基本信息</Divider>
+        <TaskDetails values={basicValues} typeMap={typeMap} />
+        <Divider orientation="left">详细信息</Divider>
+        {basicValues.isSurvey ? (
+          <SurveyList dataSource={surveyData} />
+        ) : (
+          <TaskDetails values={commonTaskDetialValues} typeMap={typeMap} />
+        )}
+        <Button>返回首页</Button>
+      </Card>
+    )
+  }
+
+  const steps = basicValues.isSurvey
+    ? [basciPage, surveyPage, confirmPage]
+    : [basciPage, confirmPage]
 
   return (
     <>
