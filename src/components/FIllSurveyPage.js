@@ -8,7 +8,7 @@ const FillSurvey = props => {
   const [loading, setLoading] = useState(false)
   const [completed, setCompleted] = useState(false)
 
-  const toQuestion = question => {
+  const toFormItem = question => {
     const itemMap = {
       radio: (
         <Radio.Group>
@@ -23,7 +23,11 @@ const FillSurvey = props => {
       text: <Input />
     }
     return (
-      <Form.Item className={styles.formLabel} key={question.title} label={question.title}>
+      <Form.Item
+        className={styles.formLabel}
+        key={question.title}
+        label={question.title}
+      >
         {getFieldDecorator(question.title, {
           rules: [
             {
@@ -36,32 +40,6 @@ const FillSurvey = props => {
     )
   }
 
-  const toAnswer = question => {
-    console.log(question)
-    const itemMap = {
-      radio: () => (
-        <Radio.Group value={question.answer}>
-          {question.options.map(item => (
-            <Radio key={item} value={item}>
-              {item}
-            </Radio>
-          ))}
-        </Radio.Group>
-      ),
-      multyCheck: () => (
-        <Checkbox.Group value={question.answer} options={question.options} />
-      ),
-      text: () => <Input value={question.answer} />
-    }
-    return (
-      <Form.Item className={styles.formLabel} key={question.title} label={question.title}>
-        {itemMap[question.type]()}
-      </Form.Item>
-    )
-  }
-
-  const toFormItem = question =>
-    'answer' in question ? toAnswer(question) : toQuestion(question)
   const handleSubmit = e => {
     e.preventDefault()
     props.form.validateFieldsAndScroll((err, values) => {
@@ -86,8 +64,8 @@ const FillSurvey = props => {
   return (
     <div>
       {completed ? (
-        <div className="feedback">
-          <p>完成问卷</p>
+        <div className={styles.feedback}>
+          <p>已完成问卷</p>
           <a href="/">返回首页</a>
         </div>
       ) : (
