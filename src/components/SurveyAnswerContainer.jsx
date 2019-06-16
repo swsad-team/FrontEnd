@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Pagination, Skeleton, Select, Radio, Divider } from 'antd'
+import {
+  Pagination,
+  Skeleton,
+  Select,
+  Radio,
+  Divider,
+  Modal,
+  Button
+} from 'antd'
 import SurveyWithAnswer from './SurveyWithAnswer'
 import styles from './SurveyAnswerContainer.module.css'
 import AnswerList from './AnswerList'
@@ -47,7 +55,40 @@ const SurveyAnswerContainer = () => {
   }
 
   const DisplayAnswers = () => {
-    return <AnswerList survey={survey} answers={answers} />
+    const [visible, setVisible] = useState(false)
+    const [viewAnswer, setViewAnswer] = useState({})
+    const handleView = item => {
+      setViewAnswer(item)
+      setVisible(true)
+    }
+
+    const Action = ({ item }) => (
+      <Button type="link" onClick={() => handleView(item)}>
+        查看问卷
+      </Button>
+    )
+    return (
+      <>
+        <AnswerList survey={survey} answers={answers} Action={Action} />
+        <Modal
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          footer={
+            <Button
+              type="primary"
+              onClick={() => {
+                setVisible(false)
+              }}
+            >
+              返回
+            </Button>
+          }
+          title={null}
+        >
+          <SurveyWithAnswer survey={survey} answer={viewAnswer} />
+        </Modal>
+      </>
+    )
   }
 
   const displayMap = {
