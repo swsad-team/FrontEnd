@@ -31,10 +31,15 @@ function AnswerList ({ survey, answers, Action }) {
         renderItem={item => {
           return (
             <List.Item>
-              {String(item.content[index])
-                ? toItem(survey[index], item.content[index])
-                : '未填写'}
-              <span className={styles.author}>{'填写人: 匿名 | '}{<Action item={item}/>}</span>
+              {String(item.content[index]) ? (
+                toItem(survey[index], item.content[index])
+              ) : (
+                <span>未填写</span>
+              )}
+              <span className={styles.author}>
+                {'填写人: 匿名 | '}
+                {<Action item={item} />}
+              </span>
             </List.Item>
           )
         }}
