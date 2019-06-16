@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
-import { Form, Input, Tooltip, Icon, Select, Button, Card, Radio } from 'antd'
 import './RegisterForm.css'
+
+import { Button, Card, Form, Icon, Input, Radio, Select, Tooltip } from 'antd'
+import React, { useState } from 'react'
+
 import { Link } from 'react-router-dom'
+
 const { Option } = Select
 
 const RegistrationForm = props => {

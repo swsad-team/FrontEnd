@@ -1,27 +1,25 @@
-import React, { useState, useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch,
-  Link
-} from 'react-router-dom'
-
 import './index.css'
+import 'moment/locale/zh-cn'
+
+import { Icon, Layout, Menu, Spin } from 'antd'
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch
+} from 'react-router-dom'
+import { UserContext, UserProvider } from './context'
+
+import HomePage from './components/HomePage'
+import { LocaleProvider } from 'antd'
+import ReactDOM from 'react-dom'
+import SubMenu from 'antd/lib/menu/SubMenu'
 import WrappedLoginForm from './components/LoginForm'
 import WrappedRegistrationForm from './components/RegisterForm'
-import HomePage from './components/HomePage'
-import { userApi } from './apis'
-import { Layout, Menu, Spin, Icon } from 'antd'
-
-import { UserProvider, UserContext } from './context'
-import SubMenu from 'antd/lib/menu/SubMenu'
-
-import { LocaleProvider } from 'antd'
-import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import moment from 'moment'
-import 'moment/locale/zh-cn'
+import { userApi } from './apis'
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
 
 moment.locale('zh-cn')
 const { Header, Content } = Layout
@@ -51,9 +49,8 @@ function App(props) {
             mode="horizontal"
             style={{ lineHeight: '64px', float: 'right' }}
           >
-            <Menu.Item key="addTask" className="add-task">
-              <Icon type="plus-circle" />
-              <Link style={{display: 'inline-block'}} to="/newTask">发布任务</Link>
+            <Menu.Item>
+              <span>发布任务</span>
             </Menu.Item>
             <SubMenu title={<Icon type="user" />}>
               <Menu.Item key="userInfo">个人信息</Menu.Item>
@@ -78,10 +75,7 @@ function App(props) {
                   !login ? WrappedRegistrationForm : () => <Redirect to="/" />
                 }
               />
-              <Route
-                path="/"
-                component={login ? HomePage : () => <Redirect to="/login" />}
-              />
+              <Route path="/" component={HomePage} />
             </Switch>
           ) : (
             <div>

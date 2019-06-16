@@ -12,15 +12,18 @@
   color: black;
   text-align: center;
   line-height: 32px;
+  float: left;
+  font-size: 24px;
 }
 
 .logo span {
-  width: 100px;
-  margin: auto;
+  width: 200px;
 }
+
 
 .header {
   background-color: white;
+  padding-left: 40px;
 }
 
 .header .anticon {
@@ -39,5 +42,3 @@
 .add-task {
   font-size: 20px;
 }
-
-
