@@ -4,7 +4,7 @@ import styles from './AnswerList.module.css'
 
 const Panel = Collapse.Panel
 
-function AnswerList ({ survey, answers }) {
+function AnswerList ({ survey, answers, Action }) {
   console.log(survey, answers)
   const [keys, setKeys] = useState([])
 
@@ -34,7 +34,7 @@ function AnswerList ({ survey, answers }) {
               {String(item.content[index])
                 ? toItem(survey[index], item.content[index])
                 : '未填写'}
-              <span className={styles.author}>{'填写人: 匿名'}</span>
+              <span className={styles.author}>{'填写人: 匿名 | '}{<Action item={item}/>}</span>
             </List.Item>
           )
         }}
@@ -51,7 +51,12 @@ function AnswerList ({ survey, answers }) {
   }
 
   return (
-    <Collapse onChange={handleChange} className={styles.answersContainer}>
+    <Collapse
+      bordered={false}
+      expandIconPosition="right"
+      onChange={handleChange}
+      className={styles.answersContainer}
+    >
       {survey.map((item, index) => (
         <Panel header={<Header item={item} />} key={item.title}>
           {keys.includes(item.title) && getAnswerByIndex(index)}
