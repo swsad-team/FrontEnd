@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Card, Steps, message } from 'antd'
+import { Link } from 'react-router-dom'
 
 import './NewTask.css'
 
@@ -81,7 +82,7 @@ const NewTaskPage = props => {
     content: (
       <Card>
         {basicValues.isSurvey ? <SurveyList dataSource={surveyData} /> : null}
-        <a href="/">返回首页</a>
+        <Link to="/">返回首页</Link>
       </Card>
     )
   }
@@ -92,7 +93,7 @@ const NewTaskPage = props => {
 
   return (
     <div className="container">
-      <Steps current={currentStep}>
+      <Steps current={currentStep} className="task-steps">
         {steps.map(item => (
           <Step key={item.title} title={item.title} />
         ))}

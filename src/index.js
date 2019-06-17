@@ -7,7 +7,8 @@ import {
   Redirect,
   Route,
   BrowserRouter as Router,
-  Switch
+  Switch,
+  Link
 } from 'react-router-dom'
 import { UserContext, UserProvider } from './context'
 
@@ -50,7 +51,7 @@ function App(props) {
             style={{ lineHeight: '64px', float: 'right' }}
           >
             <Menu.Item>
-              <a href="/tasks/new">发布任务</a>
+              <Link to="/tasks/new">发布任务</Link>
             </Menu.Item>
             <SubMenu title={<Icon type="user" />}>
               <Menu.Item key="userInfo">个人信息</Menu.Item>
