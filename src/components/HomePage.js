@@ -1,6 +1,11 @@
 import './HomePage.css'
 
 import { Icon, Layout, Menu } from 'antd'
+import {
+  MyTaskList_Join,
+  MyTaskList_Over,
+  MyTaskList_Publish
+} from './MyTaskList'
 import { NavLink, Route, Switch } from 'react-router-dom'
 
 import AllTaskList from './AllTaskList'
@@ -38,17 +43,31 @@ class HomePage extends React.Component {
                 </NavLink>
               }
             >
-              <Menu.Item key="5">我发布的</Menu.Item>
-              <Menu.Item key="6">我参与的</Menu.Item>
-              <Menu.Item key="7">已结束</Menu.Item>
+              <Menu.Item key="5">
+                <NavLink to="/tasks/mine/publish">我发布的</NavLink>
+              </Menu.Item>
+              <Menu.Item key="6">
+                <NavLink to="/tasks/mine/join">我参与的</NavLink>
+              </Menu.Item>
+              <Menu.Item key="7">
+                <NavLink to="/tasks/mine/over">已结束</NavLink>
+              </Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
         <Content className="home-page-content">
           <div>
             <Switch>
-              <Route path="/" component={AllTaskList} />
               <Route path="/tasks/all" component={AllTaskList} />
+              <Route path="/tasks/user/join" component={MyTaskList_Join} />
+              <Route path="/tasks/user/finish" component={MyTaskList_Over} />
+              <Route
+                path="/tasks/user/publish"
+                component={MyTaskList_Publish}
+              />
+              <Route path="/tasks/:tid" component={MyTaskList_Publish} />
+
+              <Route path="/" component={AllTaskList} />
             </Switch>
           </div>
         </Content>

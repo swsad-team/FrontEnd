@@ -23,7 +23,7 @@ const __task__ = {
   tid: 1,
   publisher: 2,
   title: '买奶茶',
-  description: '买一杯奶茶',
+  description: '买一fasfsfadsfasfdfafadsfadafdfafasf杯奶茶',
   isQuestionnaire: 'false',
   startTime: 1560517928893,
   endTime: 1560577998893,
