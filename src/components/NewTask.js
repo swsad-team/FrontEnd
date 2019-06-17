@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { Card, Form, Input, Button, Steps, Divider, message } from 'antd'
+import { Card, Steps, message } from 'antd'
 
 import './NewTask.css'
 
-import TaskDetails from './TaskDetails'
 import CreateSurvey, { SurveyList } from './CreateSurvey'
 import WrappedTaskBasicForm from './TaskBasicForm'
 
@@ -11,7 +10,6 @@ const { Step } = Steps
 
 const NewTaskPage = props => {
   const [basicValues, setBasicValues] = useState({})
-  const [commonTaskDetialValues, setCommonTaskDetialValues] = useState({})
   const [currentStep, setCurrentStep] = useState(0)
   const [surveyData, setSurveyData] = useState([])
 
@@ -33,16 +31,6 @@ const NewTaskPage = props => {
     console.log(values)
     setBasicValues(values)
   }
- 
-  const handleCommonDetialSubmit = (values, command = 'next') => {
-    setCommonTaskDetialValues(values)
-    // TODO: do something
-    if (command === 'next') {
-      next()
-    } else {
-      prev()
-    }
-  }
 
   const handleAddQuestion = value => {
     if (surveyData.some(item => item.title === value.title)) {
@@ -62,20 +50,6 @@ const NewTaskPage = props => {
 
   const handleSurveySubmit = () => {
     next()
-  }
-
-  const typeMap = {
-    title: '标题',
-    isSurvey: '任务类型',
-    'isSurvey-false': '普通任务',
-    'isSurvey-true': '问卷',
-    dueTime: '结束时间',
-    limits: '额外限制',
-    gender: '性别',
-    grade: '学号前缀',
-    reward: '悬赏',
-    maximumParticipators: '最多参与人数',
-    taskDescription: '任务详情'
   }
 
   const basciPage = {
@@ -106,15 +80,8 @@ const NewTaskPage = props => {
     title: '完成',
     content: (
       <Card>
-        <Divider orientation="left">基本信息</Divider>
-        <TaskDetails values={basicValues} typeMap={typeMap} />
-        <Divider orientation="left">详细信息</Divider>
-        {basicValues.isSurvey ? (
-          <SurveyList dataSource={surveyData} />
-        ) : (
-          <TaskDetails values={commonTaskDetialValues} typeMap={typeMap} />
-        )}
-        <Button>返回首页</Button>
+        {basicValues.isSurvey ? <SurveyList dataSource={surveyData} /> : null}
+        <a href="/">返回首页</a>
       </Card>
     )
   }
@@ -124,14 +91,14 @@ const NewTaskPage = props => {
     : [basciPage, confirmPage]
 
   return (
-    <>
+    <div className="container">
       <Steps current={currentStep}>
         {steps.map(item => (
           <Step key={item.title} title={item.title} />
         ))}
       </Steps>
       {steps[currentStep].content}
-    </>
+    </div>
   )
 }
 

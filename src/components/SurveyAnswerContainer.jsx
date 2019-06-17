@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Pagination,
-  Skeleton,
-  Select,
-  Radio,
-  Divider,
-  Modal,
-  Button
-} from 'antd'
+import { Pagination, Skeleton, Radio, Modal, Button } from 'antd'
 import SurveyWithAnswer from './SurveyWithAnswer'
 import styles from './SurveyAnswerContainer.module.css'
 import AnswerList from './AnswerList'
@@ -116,7 +108,7 @@ const SurveyAnswerContainer = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} container`}>
       {isLoading ? (
         <Skeleton />
       ) : (

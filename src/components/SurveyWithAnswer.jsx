@@ -1,5 +1,5 @@
 import React from 'react'
-import { Radio, Checkbox, Input, Form } from 'antd'
+import { Radio, Checkbox, Form } from 'antd'
 
 import styles from './SurveyWithAnswer.module.css'
 

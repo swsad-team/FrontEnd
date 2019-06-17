@@ -62,7 +62,7 @@ const FillSurvey = props => {
   }
 
   return (
-    <div>
+    <div className="container">
       {completed ? (
         <div className={styles.feedback}>
           <p>已完成问卷</p>
