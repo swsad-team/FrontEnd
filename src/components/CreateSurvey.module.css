@@ -1,0 +1,41 @@
+.bottomBar {
+  display: flex;
+}
+
+.bottomBar > button:last-child {
+  margin-left: auto;
+}
+
+.addQuestionContainer {
+  margin: 10px auto;
+}
+
+.openBtn {
+  display: block;
+  margin: auto;
+  border-radius: 16px;
+  width: 50%;
+}
+
+.addOption {
+  display: flex;
+  flex-direction: row;
+}
+
+.optionItem {
+
+}
+
+.questionItem {
+  display: flex;
+  flex-direction: row;
+}
+
+.questionItem :last-child {
+  margin-left: auto;
+}
+
+.questionItem > label {
+  margin-left: 10px;
+  font-weight: bold;
+}

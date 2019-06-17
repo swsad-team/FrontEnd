@@ -177,7 +177,7 @@ const TaskBasicForm = props => {
 
   const isSurvey = props.form.getFieldsValue(['isSurvey']).isSurvey
   return (
-    <div className={styles.container}>
+    <div>
       <h1>任务信息</h1>
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item label="标题">
