@@ -7,10 +7,23 @@ import {
   Select,
   Button,
   Input,
-  message
+  message,
+  Divider,
+  Icon
 } from 'antd'
 
+import styles from './CreateSurvey.module.css'
+
 const { Option } = Select
+
+  const getTypeDisplayName = type => {
+    const typeToZh = {
+      radio: '单选',
+      multyCheck: '多选',
+      text: '文本'
+    }
+    return typeToZh[type] || '文本'
+  }
 
 export const SurveyList = props => {
   const { dataSource, removeItem } = props
@@ -23,16 +36,19 @@ export const SurveyList = props => {
       itemLayout="horizontal"
       bordered
       renderItem={(item, index) => (
-        <List.Item>
+        <List.Item className={styles.questionItem}>
           <label>问题{index + 1}: </label>
           <label>标题: </label> <span> {item.title}</span>
-          <label>类型: </label> <span> {item.type} </span>
+          <label>类型: </label> <span> {getTypeDisplayName(item.type)} </span>
           {item.options && item.options.length ? (
             <>
               <label>选项: </label> <span>{String(item.options)}</span>
             </>
           ) : null}
-          {removeItem && <Button onClick={e => handleClick(index)}>X</Button>}
+          <span></span>
+          {removeItem && (
+            <Icon type="delete" onClick={e => handleClick(index)} />
+          )}
         </List.Item>
       )}
     />
@@ -55,20 +71,22 @@ const Choices = props => {
   }
   return (
     <>
-      <p>选项: </p>
-      {choices.length !== 0 && (
-        <List
-          dataSource={choices}
-          renderItem={(item, index) => {
-            return (
-              <div>
-                {`选项${index + 1}: `}
-                <Checkbox checked={false}>{item}</Checkbox>
-              </div>
-            )
-          }}
-        />
-      )}
+      <Form.Item label="选项列表">
+        {choices.length !== 0 && (
+          <List
+            style={{ paddingLeft: '12px' }}
+            dataSource={choices}
+            renderItem={(item, index) => {
+              return (
+                <div className={styles.optionItem}>
+                  <span>{`选项${index + 1}: `}</span>
+                  <Checkbox checked={false}>{item}</Checkbox>
+                </div>
+              )
+            }}
+          />
+        )}
+      </Form.Item>
       <AddOption
         validateStatus={validateStatus}
         help={help}
@@ -93,9 +111,12 @@ const AddOption = props => {
 
   return (
     <Form.Item validateStatus={validateStatus} help={help}>
-      <div className={{ display: 'flex' }}>
-        {prefix}
-        <Input value={value} onChange={e => onChange(e.target.value)} />
+      <div className={styles.addOption}>
+        <Input
+          addonBefore={prefix}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+        />
         {addButton}
       </div>
     </Form.Item>
@@ -104,14 +125,7 @@ const AddOption = props => {
 
 const QuestionLimit = props => {
   const { isRequired, type, onRequiredChange, onTypeChange, types } = props
-  const getTypeDisplayName = type => {
-    const typeToZh = {
-      radio: '单选',
-      multyCheck: '多选',
-      text: '文本'
-    }
-    return typeToZh[type] || '文本'
-  }
+
   return (
     <div>
       <label>问题类型: </label>
@@ -136,7 +150,7 @@ const TitleInput = props => {
     <Form.Item label="标题">
       <Input.TextArea
         value={value}
-        autosize={{ minRows: 2, maxRows: 4 }}
+        autosize={{ minRows: 1, maxRows: 2 }}
         maxLength="400"
         onChange={e => {
           const value = e.target.value
@@ -192,6 +206,13 @@ const CreateQuestion = props => {
 
   const handleOpenChange = () => {
     setOpen(!isOpen)
+    if (!isOpen) {
+      setQuestionData(initData)
+    }
+    setTimeout(() => {
+      const t = document.getElementsByClassName('anchor')[0]
+      t && t.scrollIntoView({ behavior: 'smooth' })
+    }, 0)
   }
 
   const handleAdd = () => {
@@ -211,29 +232,47 @@ const CreateQuestion = props => {
   }
 
   const handleSelectChange = value => {
-    setQuestionData({ type: value, options: [], isRequired: true, title: '' })
+    setQuestionData({
+      type: value,
+      options: [],
+      isRequired: true,
+      title: questionData.title
+    })
   }
 
-  const OpenButton = <Button onClick={handleOpenChange}>添加问题</Button>
+  const OpenButton = (
+    <Button
+      type="primary"
+      className={styles.openBtn}
+      onClick={handleOpenChange}
+    >
+      添加问题
+    </Button>
+  )
   const CancleButton = <Button onClick={handleOpenChange}>取消</Button>
-  const AddButton = <Button onClick={handleAdd}>添加问题</Button>
+  const AddButton = (
+    <Button className="anchor" type="primary" onClick={handleAdd}>
+      添加问题
+    </Button>
+  )
 
   return (
-    <div>
+    <div className={styles.addQuestionContainer}>
       {!isOpen ? (
         OpenButton
       ) : (
-        <>
-          <TitleInput
-            value={questionData.title}
-            onChange={handleChange('title')}
-          />
+          <>
+            <Divider>新问题</Divider>
           <QuestionLimit
             isRequired={questionData.isRequired}
             types={types}
             type={questionData.type}
             onRequiredChange={handleChange('isRequired')}
             onTypeChange={handleSelectChange}
+          />
+          <TitleInput
+            value={questionData.title}
+            onChange={handleChange('title')}
           />
           {questionData.type === 'text' ? null : (
             <Choices
@@ -242,8 +281,10 @@ const CreateQuestion = props => {
               choices={questionData.options}
             />
           )}
-          {AddButton}
-          {CancleButton}
+          <span className={styles.bottomBar}>
+            {CancleButton}
+            {AddButton}
+          </span>
         </>
       )}
     </div>
@@ -254,17 +295,20 @@ const CreateSurvey = props => {
   const { onChange, surveyData, onSubmit, onRemove, onPrev } = props
 
   return (
-    <Card title="问卷">
+    <div>
+      <h1>问卷内容</h1>
       <SurveyList
         dataSource={surveyData}
         removeItem={index => onRemove(index)}
       />
       <CreateQuestion onCreate={onChange} />
-      <Button onClick={onPrev}>返回上步</Button>
-      <Button onClick={onSubmit} type="primary">
-        完成问卷
-      </Button>
-    </Card>
+      <div className={styles.bottomBar}>
+        <Button onClick={onPrev}>返回上步</Button>
+        <Button onClick={onSubmit} type="primary">
+          发布问卷
+        </Button>
+      </div>
+    </div>
   )
 }
 

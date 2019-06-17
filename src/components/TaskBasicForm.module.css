@@ -1,10 +1,4 @@
 .bottomBar {
   text-align: right;
-  padding-bottom: 10px;
-}
-
-.container {
-  background-color: white;
-  border-radius: 8px;
-  padding: 20px 20px 0px 20px;
+  margin-bottom: 0;
 }

@@ -50,7 +50,12 @@ const NewTaskPage = props => {
   }
 
   const handleSurveySubmit = () => {
-    next()
+    if (surveyData.length === 0) {
+      message.error('问卷不能为空')
+    } else {
+
+      next()
+    }
   }
 
   const basciPage = {
@@ -80,10 +85,18 @@ const NewTaskPage = props => {
   const confirmPage = {
     title: '完成',
     content: (
-      <Card>
-        {basicValues.isSurvey ? <SurveyList dataSource={surveyData} /> : null}
-        <Link to="/">返回首页</Link>
-      </Card>
+      <div>
+        {basicValues.isSurvey ? (
+          <>
+            <h1>问卷内容</h1>
+            <SurveyList dataSource={surveyData} />
+          </>
+        ) : null}
+        <div className="feedback">
+          <p>任务创建成功</p>
+          <Link to="/">返回首页</Link>
+        </div>
+      </div>
     )
   }
 
@@ -98,7 +111,7 @@ const NewTaskPage = props => {
           <Step key={item.title} title={item.title} />
         ))}
       </Steps>
-      {steps[currentStep].content}
+      <div className="task-container">{steps[currentStep].content}</div>
     </div>
   )
 }
