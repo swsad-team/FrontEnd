@@ -43,20 +43,18 @@
 
 .expand {
   overflow: hidden;
-  height: 160px;
+  height: 200px;
 }
 
 .expandContent {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-left: 40px;
   padding-right: 40px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  height: 160px;
+  overflow: scroll;
 }
 
-.expandContent>* {
-  height: 20px;
-}
 
 .reward {
   color: rgb(246, 194, 71);
