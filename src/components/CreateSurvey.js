@@ -1,14 +1,11 @@
-import React, { forwardRef, useState, useRef } from 'react'
+import React, { useState } from 'react'
 import {
   Form,
   Card,
   List,
-  Row,
-  Col,
   Checkbox,
   Select,
   Button,
-  Divider,
   Input,
   message
 } from 'antd'
@@ -264,7 +261,9 @@ const CreateSurvey = props => {
       />
       <CreateQuestion onCreate={onChange} />
       <Button onClick={onPrev}>返回上步</Button>
-      <Button onClick={onSubmit} type="primary">完成问卷</Button>
+      <Button onClick={onSubmit} type="primary">
+        完成问卷
+      </Button>
     </Card>
   )
 }

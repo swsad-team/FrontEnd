@@ -11,7 +11,6 @@ import {
 } from 'react-router-dom'
 import { UserContext, UserProvider } from './context'
 
-import HomePage from './components/HomePage'
 import { LocaleProvider } from 'antd'
 import ReactDOM from 'react-dom'
 import SubMenu from 'antd/lib/menu/SubMenu'
@@ -20,6 +19,7 @@ import WrappedRegistrationForm from './components/RegisterForm'
 import moment from 'moment'
 import { userApi } from './apis'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
+import AppRouter from './components/AppRouter';
 
 moment.locale('zh-cn')
 const { Header, Content } = Layout
@@ -50,7 +50,7 @@ function App(props) {
             style={{ lineHeight: '64px', float: 'right' }}
           >
             <Menu.Item>
-              <span>发布任务</span>
+              <a href="/tasks/new">发布任务</a>
             </Menu.Item>
             <SubMenu title={<Icon type="user" />}>
               <Menu.Item key="userInfo">个人信息</Menu.Item>
@@ -75,7 +75,7 @@ function App(props) {
                   !login ? WrappedRegistrationForm : () => <Redirect to="/" />
                 }
               />
-              <Route path="/" component={HomePage} />
+              <Route path="/" component={AppRouter} />
             </Switch>
           ) : (
             <div>
