@@ -14,6 +14,8 @@ import {
 import moment from 'moment'
 import CheckAllBox from './CheckAllBox'
 
+import styles from './TaskBasicForm.module.css'
+
 const { TextArea } = Input
 
 let LimitForm = ({ value = [], onChange }, ref) => {
@@ -175,7 +177,8 @@ const TaskBasicForm = props => {
 
   const isSurvey = props.form.getFieldsValue(['isSurvey']).isSurvey
   return (
-    <Card title="任务" className="task-card">
+    <div className={styles.container}>
+      <h1>任务信息</h1>
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item label="标题">
           {commonDecorators['title'](<Input type="text" />)}
@@ -218,13 +221,13 @@ const TaskBasicForm = props => {
             />
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item className={styles.bottomBar}>
           <Button type="primary" htmlType="submit">
             {isSurvey ? '继续填写': '发布任务'}
           </Button>
         </Form.Item>
       </Form>
-    </Card>
+    </div>
   )
 }
 const WrappedTaskBasicForm = Form.create({ name: 'task_basic' })(TaskBasicForm)
