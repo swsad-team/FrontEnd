@@ -60,6 +60,7 @@ const LoginForm = props => {
             type="primary"
             htmlType="submit"
             className="login-form-button"
+            loading={loaded}
           >
             登陆
           </Button>

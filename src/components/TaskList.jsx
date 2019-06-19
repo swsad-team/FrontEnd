@@ -55,9 +55,9 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
     [styles.expand]: expand
   })
   const getButton = <Button onClick={handleClick}>GET</Button>
-  const endButton = <Button disabled>已结束</Button>
-  const attendButton = <Button disabled>已参加</Button>
-  const joinButton = <Button disabled>已完成</Button>
+  // const endButton = <Button disabled>已结束</Button>
+  // const attendButton = <Button disabled>已参加</Button>
+  // const joinButton = <Button disabled>已完成</Button>
   return (
     <div className={itemClass}>
       <div className={styles.info} onClick={e => onSelect(!expand)}>
