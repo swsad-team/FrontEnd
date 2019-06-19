@@ -40,6 +40,13 @@ function App(props) {
     fetchUserInfo()
   }, [])
 
+  const handleSignOut = async () => {
+    const response = await userApi.signOutUser()
+    if (response) {
+      setLogin(false)
+    }
+  }
+ 
   let content = (
     <Layout className="layout">
       <Router>
@@ -56,7 +63,7 @@ function App(props) {
             </Menu.Item>
             <SubMenu title={<Icon type="user" />}>
               <Menu.Item key="userInfo">个人信息</Menu.Item>
-              <Menu.Item key="logout">退出</Menu.Item>
+              <Menu.Item key="logout" onClick={handleSignOut}>退出</Menu.Item>
             </SubMenu>
           </Menu>
         </Header>
