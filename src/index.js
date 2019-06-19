@@ -20,7 +20,7 @@ import WrappedRegistrationForm from './components/RegisterForm'
 import moment from 'moment'
 import { userApi } from './apis'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
-import AppRouter from './components/AppRouter';
+import HomePage from './components/HomePage';
 
 moment.locale('zh-cn')
 const { Header, Content } = Layout
@@ -76,7 +76,7 @@ function App(props) {
                   !login ? WrappedRegistrationForm : () => <Redirect to="/" />
                 }
               />
-              <Route path="/" component={AppRouter} />
+              <Route path="/" component={HomePage} />
             </Switch>
           ) : (
             <div>
