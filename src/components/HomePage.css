@@ -3,14 +3,13 @@
 }
 
 .home-page-content {
-  display: flex;
-  justify-content: center;
+  min-height: 90vh;
 }
 
 .home-page-content>div {
+  margin:  25px auto;
   width: 800px;
   background-color: #ffffff;
   /* border-radius: 8px; */
   overflow: hidden;
-  margin: 25px;
 }
