@@ -86,7 +86,7 @@ const NewTaskPage = props => {
     title: '完成',
     content: (
       <div>
-        {basicValues.isSurvey ? (
+        {basicValues.isQuestionnaire ? (
           <>
             <h1>问卷内容</h1>
             <SurveyList dataSource={surveyData} />
@@ -100,7 +100,7 @@ const NewTaskPage = props => {
     )
   }
 
-  const steps = basicValues.isSurvey
+  const steps = basicValues.isQuestionnaire
     ? [basciPage, surveyPage, confirmPage]
     : [basciPage, confirmPage]
 
