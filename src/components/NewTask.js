@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, Steps, message } from 'antd'
+import { Steps, message } from 'antd'
 import { Link } from 'react-router-dom'
 
 import './NewTask.css'

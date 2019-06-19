@@ -1,81 +1,78 @@
-import React, { useState, forwardRef } from 'react'
+import React, { useState } from 'react'
 import {
   Form,
   Button,
-  Card,
   Radio,
   DatePicker,
   InputNumber,
   Alert,
   Input,
-  List
 } from 'antd'
 
 import moment from 'moment'
-import CheckAllBox from './CheckAllBox'
 
 import styles from './TaskBasicForm.module.css'
 
 const { TextArea } = Input
 
-let LimitForm = ({ value = [], onChange }, ref) => {
-  const options = ['男', '女', '其他']
-  const [limits, setLimits] = useState(value)
-  const [checkedList, setCheckedList] = useState([])
-  const [grade, setGrade] = useState(null)
-  const handleClick = () => {
-    const newLimit = { gender: checkedList, grade: grade }
-    if (!(newLimit.gender.length || grade)) {
-      return
-    }
-    const flag = limits.find(item => {
-      return (
-        item.gender.toString() === newLimit.gender.toString() &&
-        item.grade === newLimit.grade
-      )
-    })
-    if (!flag && onChange) {
-      onChange(limits.concat(newLimit))
-      setLimits(limits.concat(newLimit))
-      setCheckedList([])
-      setGrade(null)
-    }
-  }
+// let LimitForm = ({ value = [], onChange }, ref) => {
+//   const options = ['男', '女', '其他']
+//   const [limits, setLimits] = useState(value)
+//   const [checkedList, setCheckedList] = useState([])
+//   const [grade, setGrade] = useState(null)
+//   const handleClick = () => {
+//     const newLimit = { gender: checkedList, grade: grade }
+//     if (!(newLimit.gender.length || grade)) {
+//       return
+//     }
+//     const flag = limits.find(item => {
+//       return (
+//         item.gender.toString() === newLimit.gender.toString() &&
+//         item.grade === newLimit.grade
+//       )
+//     })
+//     if (!flag && onChange) {
+//       onChange(limits.concat(newLimit))
+//       setLimits(limits.concat(newLimit))
+//       setCheckedList([])
+//       setGrade(null)
+//     }
+//   }
 
-  return (
-    <div ref={ref}>
-      <span>
-        <label>性别:</label>
-        <CheckAllBox
-          withCheckAll={true}
-          options={options}
-          checkedList={checkedList}
-          onChange={setCheckedList}
-        />
-        <label>学号前缀:</label>
-        <InputNumber
-          min={1}
-          value={grade}
-          max={Math.pow(10, 10) - 1}
-          onChange={setGrade}
-        />
-        <Button onClick={handleClick}>添加</Button>
-      </span>
-      {limits.length !== 0 && (
-        <List
-          dataSource={limits}
-          renderItem={item => (
-            <List.Item>
-              性别:{item.gender.join('/')} 学号前缀:{item.grade}{' '}
-            </List.Item>
-          )}
-        />
-      )}
-    </div>
-  )
-}
+//   return (
+//     <div ref={ref}>
+//       <span>
+//         <label>性别:</label>
+//         <CheckAllBox
+//           withCheckAll={true}
+//           options={options}
+//           checkedList={checkedList}
+//           onChange={setCheckedList}
+//         />
+//         <label>学号前缀:</label>
+//         <InputNumber
+//           min={1}
+//           value={grade}
+//           max={Math.pow(10, 10) - 1}
+//           onChange={setGrade}
+//         />
+//         <Button onClick={handleClick}>添加</Button>
+//       </span>
+//       {limits.length !== 0 && (
+//         <List
+//           dataSource={limits}
+//           renderItem={item => (
+//             <List.Item>
+//               性别:{item.gender.join('/')} 学号前缀:{item.grade}{' '}
+//             </List.Item>
+//           )}
+//         />
+//       )}
+//     </div>
+//   )
+// }
 
-LimitForm = forwardRef(LimitForm)
+// LimitForm = forwardRef(LimitForm)
 
 const TaskBasicForm = props => {
   const { onSubmit, formValues, onTypeChange } = props
