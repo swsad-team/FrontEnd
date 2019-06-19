@@ -1,21 +1,53 @@
 import './RegisterForm.css'
 
-import { Button, Card, Form, Icon, Input, Radio, Select, Tooltip } from 'antd'
-import React, { useState } from 'react'
+import {
+  Button,
+  Card,
+  Form,
+  Icon,
+  Input,
+  Radio,
+  Select,
+  Tooltip,
+  message
+} from 'antd'
+import React, { useState, useContext } from 'react'
 
 import { Link } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
+import { userApi } from '../apis'
+import { UserContext } from '../context'
 
 const { Option } = Select
 
 const RegistrationForm = props => {
   const [confirmDirty, setConfirmDirty] = useState(false)
+  const { setLogin, setUserInfo } = useContext(UserContext)
 
   const handleSubmit = e => {
     e.preventDefault()
-    props.form.validateFieldsAndScroll((err, values) => {
+    const fields = commonFields
+      .map(item => item.type)
+      .concat(
+        additionalFields.reduce((acc, item) => {
+          return props.form.getFieldValue('isOrganization') ^
+            (item.type !== 'address')
+            ? acc.concat(item.type)
+            : acc
+        }, [])
+      )
+    props.form.validateFieldsAndScroll(fields, async (err, values) => {
       if (!err) {
-        // TODO: connet register api
         console.log('Received values of form: ', values)
+        delete values.confirm
+        const res = await userApi.registerUser(values)
+        if (res.errorMessage) {
+          message.error(res.errorMessage)
+        } else {
+          message.success('注册成功, 已自动登陆')
+          setLogin(true)
+          setUserInfo(res)
+        }
       }
     })
   }
@@ -123,7 +155,7 @@ const RegistrationForm = props => {
       }
     },
     {
-      type: 'nickname',
+      type: 'name',
       options: {
         rules: [
           {
@@ -144,7 +176,7 @@ const RegistrationForm = props => {
 
   const additionalFields = [
     {
-      type: 'name',
+      type: 'realname',
       options: {
         rules: [
           {
@@ -172,7 +204,7 @@ const RegistrationForm = props => {
       }
     },
     {
-      type: 'studentId',
+      type: 'studentID',
       options: {
         rules: [
           {
@@ -228,7 +260,7 @@ const RegistrationForm = props => {
   const PersonalForm = (
     <>
       <Form.Item label="真实姓名">
-        {additionalDecorators['name'](<Input />)}
+        {additionalDecorators['realname'](<Input />)}
       </Form.Item>
       <Form.Item label="出生年份">
         {additionalDecorators['birthYear'](<Select>{Years}</Select>)}
@@ -243,7 +275,7 @@ const RegistrationForm = props => {
         )}
       </Form.Item>
       <Form.Item label="学号">
-        {additionalDecorators['studentId'](<Input />)}
+        {additionalDecorators['studentID'](<Input />)}
       </Form.Item>
     </>
   )
@@ -279,7 +311,7 @@ const RegistrationForm = props => {
             </span>
           }
         >
-          {commonDecorators['nickname'](<Input />)}
+          {commonDecorators['name'](<Input />)}
         </Form.Item>
         <Form.Item label="账号类型">
           {commonDecorators['isOrganization'](
