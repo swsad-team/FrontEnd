@@ -29,6 +29,11 @@ export async function registerUser(data) {
   }
 }
 
+export async function signOutUser() {
+  localStorage.removeItem('JWT_TOKEN')
+  return true
+}
+
 export async function getUserInfo(userId = 2) {
   const id = userId ? userId : ''
   try {
