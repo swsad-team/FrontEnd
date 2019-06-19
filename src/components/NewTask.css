@@ -2,10 +2,19 @@
   margin-bottom: 15px;
 }
 
+.container {
+  margin: 20px;
+  padding: 0 10px;
+}
+
 .task-container {
   background-color: white;
   border-radius: 8px;
   padding: 20px 20px 10px 20px;
+}
+
+.task-container h1 {
+  font-size: 20px;
 }
 
 .feedback {
