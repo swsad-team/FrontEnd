@@ -117,13 +117,13 @@ const TaskBasicForm = props => {
       }
     },
     {
-      type: 'isSurvey',
+      type: 'isQuestionnaire',
       options: {
         initialValue: false
       }
     },
     {
-      type: 'dueTime',
+      type: 'endTime',
       options: {
         rules: [
           {
@@ -140,7 +140,7 @@ const TaskBasicForm = props => {
       }
     },
     {
-      type: 'maximumParticipators',
+      type: 'numOfPeople',
       options: {
         initialValue: 1
       }
@@ -150,9 +150,9 @@ const TaskBasicForm = props => {
       options: {}
     },
     {
-      type: 'taskDescription',
+      type: 'description',
       options: {
-        initialValue: formValues['taskDescription'],
+        initialValue: formValues['description'],
         rules: [
           {
             required: true,
@@ -175,7 +175,7 @@ const TaskBasicForm = props => {
     commonDecorators[field.type] = getFieldDecorator(field.type, field.options)
   })
 
-  const isSurvey = props.form.getFieldsValue(['isSurvey']).isSurvey
+  const isQuestionnaire = props.form.getFieldsValue(['isQuestionnaire']).isQuestionnaire
   return (
     <div>
       <h1>任务信息</h1>
@@ -184,15 +184,15 @@ const TaskBasicForm = props => {
           {commonDecorators['title'](<Input type="text" />)}
         </Form.Item>
         <Form.Item label="任务类型">
-          {commonDecorators['isSurvey'](
-            <Radio.Group onChange={e => onTypeChange({ ...props.form.getFieldsValue(), isSurvey: e.target.value })}>
+          {commonDecorators['isQuestionnaire'](
+            <Radio.Group onChange={e => onTypeChange({ ...props.form.getFieldsValue(), isQuestionnaire: e.target.value })}>
               <Radio value={false}>普通任务</Radio>
               <Radio value={true}>问卷</Radio>
             </Radio.Group>
           )}
         </Form.Item>
         <Form.Item label="截至时间">
-          {commonDecorators['dueTime'](
+          {commonDecorators['endTime'](
             <DatePicker
               format="YYYY-MM-DD HH:mm"
               showTime={{
@@ -202,19 +202,19 @@ const TaskBasicForm = props => {
               onChange={handleDueTimeChange}
             />
           )}
-          {tipTime && <Alert message={tipTime} type="info" showIcon />}
+          {tipTime && <Alert style={{width: '200px'}} message={tipTime} type="info" showIcon />}
         </Form.Item>
         <Form.Item label="悬赏">
           {commonDecorators['reward'](<InputNumber min={1} suffix="金币" />)}
         </Form.Item>
         <Form.Item label="最多参与人数">
-          {commonDecorators['maximumParticipators'](<InputNumber min={1} />)}
+          {commonDecorators['numOfPeople'](<InputNumber min={1} />)}
         </Form.Item>
         {/* <Form.Item label="额外限制">
           {commonDecorators['limits'](<LimitForm />)}
         </Form.Item> */}
         <Form.Item label="任务详情">
-          {commonDecorators['taskDescription'](
+          {commonDecorators['description'](
             <TextArea
               autosize={{ minRows: 2, maxRows: 10 }}
               maxLength={1000}
@@ -223,7 +223,7 @@ const TaskBasicForm = props => {
         </Form.Item>
         <Form.Item className={styles.bottomBar}>
           <Button type="primary" htmlType="submit">
-            {isSurvey ? '继续填写': '发布任务'}
+            {isQuestionnaire ? '继续填写': '发布任务'}
           </Button>
         </Form.Item>
       </Form>
