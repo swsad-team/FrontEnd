@@ -10,6 +10,9 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 
 import AllTaskList from './AllTaskList'
 import React from 'react'
+import NewTaskPage from './NewTask'
+import FillSurveyPage from './FillSurveyPage'
+import SurveyAnswerContainer from './SurveyAnswerContainer'
 
 const { Sider, Content } = Layout
 
@@ -58,6 +61,12 @@ class HomePage extends React.Component {
         <Content className="home-page-content">
           <div>
             <Switch>
+              <Route path="/tasks/new" component={NewTaskPage} />
+              <Route path="/tasks/:tid/fill" component={FillSurveyPage} />
+              <Route
+                path="/tasks/:tid/info"
+                component={SurveyAnswerContainer}
+              />
               <Route path="/tasks/all" component={AllTaskList} />
               <Route path="/tasks/user/join" component={MyTaskList_Join} />
               <Route path="/tasks/user/finish" component={MyTaskList_Over} />
