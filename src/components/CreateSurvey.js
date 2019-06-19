@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import {
   Form,
-  Card,
-  List,
   Checkbox,
   Select,
   Button,
   Input,
   message,
-  Divider,
   Icon,
   Modal
 } from 'antd'
