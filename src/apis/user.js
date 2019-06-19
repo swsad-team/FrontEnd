@@ -10,7 +10,7 @@ const prefix = 'api/users'
 export async function loginUser(phoneOrEmail, password) {
   try {
     const respones = await instance.post(`${prefix}/login`, {
-      phoneOrEmail,
+      account: phoneOrEmail,
       password
     })
     return respones.data
