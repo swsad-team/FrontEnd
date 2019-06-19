@@ -20,7 +20,7 @@ import WrappedRegistrationForm from './components/RegisterForm'
 import moment from 'moment'
 import { userApi } from './apis'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
-import HomePage from './components/HomePage';
+import HomePage from './components/HomePage'
 
 moment.locale('zh-cn')
 const { Header, Content } = Layout
@@ -31,8 +31,9 @@ function App(props) {
   useEffect(() => {
     async function fetchUserInfo() {
       let user = await userApi.getUserInfo()
+      console.log(user)
       if (user) {
-        setLogin(true)
+        // setLogin(true)
       }
       setLoading(true)
     }
@@ -76,7 +77,10 @@ function App(props) {
                   !login ? WrappedRegistrationForm : () => <Redirect to="/" />
                 }
               />
-              <Route path="/" component={HomePage} />
+              <Route
+                path="/"
+                component={login ? HomePage : () => <Redirect to="/login" />}
+              />
             </Switch>
           ) : (
             <div>
