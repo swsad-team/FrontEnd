@@ -9,21 +9,22 @@ import {
   Input,
   message,
   Divider,
-  Icon
+  Icon,
+  Modal
 } from 'antd'
 
 import styles from './CreateSurvey.module.css'
 
 const { Option } = Select
 
-  const getTypeDisplayName = type => {
-    const typeToZh = {
-      radio: '单选',
-      multyCheck: '多选',
-      text: '文本'
-    }
-    return typeToZh[type] || '文本'
+const getTypeDisplayName = type => {
+  const typeToZh = {
+    radio: '单选',
+    multyCheck: '多选',
+    text: '文本'
   }
+  return typeToZh[type] || '文本'
+}
 
 export const SurveyList = props => {
   const { dataSource, removeItem } = props
@@ -31,27 +32,40 @@ export const SurveyList = props => {
     removeItem && removeItem(index)
   }
   return (
-    <List
-      dataSource={dataSource}
-      itemLayout="horizontal"
-      bordered
-      renderItem={(item, index) => (
-        <List.Item className={styles.questionItem}>
-          <label>问题{index + 1}: </label>
-          <label>标题: </label> <span> {item.title}</span>
-          <label>类型: </label> <span> {getTypeDisplayName(item.type)} </span>
-          {item.options && item.options.length ? (
-            <>
-              <label>选项: </label> <span>{String(item.options)}</span>
-            </>
-          ) : null}
-          <span></span>
-          {removeItem && (
-            <Icon type="delete" onClick={e => handleClick(index)} />
-          )}
-        </List.Item>
+    <div className={styles.surveyList}>
+      {dataSource.length !== 0 ? (
+        dataSource.map((item, index) => (
+          <div className={styles.questionItem}>
+            <span className={styles.content}>
+              <span>
+                <label>问题{index + 1}: </label>
+              </span>
+              <span>
+                <label>标题: </label> {item.title}
+              </span>
+              <span>
+                <label>类型: </label> {getTypeDisplayName(item.type)}
+              </span>
+              {item.options && item.options.length ? (
+                <span className={styles.optionsText}>
+                  <label>选项: </label>
+                  {String(item.options)}
+                </span>
+              ) : null}
+            </span>
+            {removeItem && (
+              <Icon
+                className={styles.deleteIcon}
+                type="delete"
+                onClick={e => handleClick(index)}
+              />
+            )}
+          </div>
+        ))
+      ) : (
+        <h3>暂无问题, 请添加</h3>
       )}
-    />
+    </div>
   )
 }
 
@@ -73,18 +87,25 @@ const Choices = props => {
     <>
       <Form.Item label="选项列表">
         {choices.length !== 0 && (
-          <List
-            style={{ paddingLeft: '12px' }}
-            dataSource={choices}
-            renderItem={(item, index) => {
+          <div>
+            {choices.map((item, index) => {
               return (
                 <div className={styles.optionItem}>
-                  <span>{`选项${index + 1}: `}</span>
-                  <Checkbox checked={false}>{item}</Checkbox>
+                  <label>{`选项${index + 1}: `}</label>
+                  <span>{item}</span>
+                  <Icon
+                    type="close"
+                    onClick={() =>
+                      onChange([
+                        ...choices.slice(0, index),
+                        ...choices.slice(index + 1)
+                      ])
+                    }
+                  />
                 </div>
               )
-            }}
-          />
+            })}
+          </div>
         )}
       </Form.Item>
       <AddOption
@@ -97,9 +118,12 @@ const Choices = props => {
           setValue(v)
         }}
         addButton={
-          <Button disabled={first} type="primary" onClick={handleAdd}>
-            新增选项
-          </Button>
+          <Button
+            icon="plus"
+            disabled={first}
+            type="primary"
+            onClick={handleAdd}
+          />
         }
       />
     </>
@@ -135,7 +159,7 @@ const QuestionLimit = props => {
       >
         必填
       </Checkbox>
-      <Select defaultValue={type} onChange={v => onTypeChange(v)}>
+      <Select value={type} onChange={v => onTypeChange(v)}>
         {types.map(type => (
           <Option key={type}>{getTypeDisplayName(type)}</Option>
         ))}
@@ -206,13 +230,6 @@ const CreateQuestion = props => {
 
   const handleOpenChange = () => {
     setOpen(!isOpen)
-    if (!isOpen) {
-      setQuestionData(initData)
-    }
-    setTimeout(() => {
-      const t = document.getElementsByClassName('anchor')[0]
-      t && t.scrollIntoView({ behavior: 'smooth' })
-    }, 0)
   }
 
   const handleAdd = () => {
@@ -241,28 +258,35 @@ const CreateQuestion = props => {
   }
 
   const OpenButton = (
-    <Button
-      type="primary"
-      className={styles.openBtn}
-      onClick={handleOpenChange}
-    >
-      添加问题
-    </Button>
+    <span className={styles.openBtn}>
+      <Button type="dashed" onClick={handleOpenChange}>
+        新增问题
+      </Button>
+    </span>
   )
-  const CancleButton = <Button onClick={handleOpenChange}>取消</Button>
+  const CancleButton = (
+    <Button onClick={() => setQuestionData(initData)}>重置</Button>
+  )
   const AddButton = (
-    <Button className="anchor" type="primary" onClick={handleAdd}>
+    <Button type="primary" onClick={handleAdd}>
       添加问题
     </Button>
   )
 
   return (
     <div className={styles.addQuestionContainer}>
-      {!isOpen ? (
-        OpenButton
-      ) : (
-          <>
-            <Divider>新问题</Divider>
+      {OpenButton}
+      <Modal
+        visible={isOpen}
+        onCancel={handleOpenChange}
+        footer={
+          <span className={styles.bottomBar}>
+            {CancleButton}
+            {AddButton}
+          </span>
+        }
+      >
+        <div className={styles.taskModalBody}>
           <QuestionLimit
             isRequired={questionData.isRequired}
             types={types}
@@ -281,12 +305,8 @@ const CreateQuestion = props => {
               choices={questionData.options}
             />
           )}
-          <span className={styles.bottomBar}>
-            {CancleButton}
-            {AddButton}
-          </span>
-        </>
-      )}
+        </div>
+      </Modal>
     </div>
   )
 }
@@ -297,11 +317,13 @@ const CreateSurvey = props => {
   return (
     <div>
       <h1>问卷内容</h1>
-      <SurveyList
-        dataSource={surveyData}
-        removeItem={index => onRemove(index)}
-      />
-      <CreateQuestion onCreate={onChange} />
+      <div className={styles.surveyContainer}>
+        <SurveyList
+          dataSource={surveyData}
+          removeItem={index => onRemove(index)}
+        />
+        <CreateQuestion onCreate={onChange} />
+      </div>
       <div className={styles.bottomBar}>
         <Button onClick={onPrev}>返回上步</Button>
         <Button onClick={onSubmit} type="primary">
