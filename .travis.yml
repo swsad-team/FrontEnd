@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+- '10'
+script:
+- yarn build
+deploy:
+  provider: gae
+  skip_cleanup: true
+  keyfile: key.json
+  project: swsad-cloud
+before_install:
+- openssl aes-256-cbc -K $encrypted_d72ea3942c4e_key -iv $encrypted_d72ea3942c4e_iv
+  -in key.json.enc -out key.json -d
