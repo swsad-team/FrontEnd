@@ -1,7 +1,5 @@
-runtime: php55
-api_version: 1
+runtime: nodejs10
 service: front-end
-threadsafe: true
 
 handlers:
   - url: /
@@ -9,8 +7,9 @@ handlers:
     upload: build/index.html
   - url: /static
     static_dir: build/static
-  - url: /[^/]\.[^/]*$
-    static_dir: build
+  - url: /favicon\.ico$
+    static_files: build/favicon.ico
+    upload: build/favicon.ico
   - url: /.*
     static_files: build/index.html
     upload: build/index.html
