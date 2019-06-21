@@ -7,11 +7,14 @@ import {
   InputNumber,
   Alert,
   Input,
+  message
 } from 'antd'
 
 import moment from 'moment'
 
 import styles from './TaskBasicForm.module.css'
+import { taskApi } from '../apis';
+
 
 const { TextArea } = Input
 
@@ -79,11 +82,22 @@ const TaskBasicForm = props => {
   const [tipTime, setTipTime] = useState('')
   const handleSubmit = e => {
     e.preventDefault()
-    props.form.validateFieldsAndScroll((err, values) => {
+    props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         // TODO: connet register api
         console.log('Received values of form: ', values)
-        onSubmit(values)
+        if(!isQuestionnaire)  {
+          delete values.confirm
+          const res = await taskApi.createTask(values)
+          if (res.errorMessage) {
+            message.error(res.errorMessage)
+          } else {         
+            onSubmit(values)  
+            message.success('任务创建成功')
+          }
+        } else {
+          onSubmit(values) 
+        }       
       }
     })
   }
