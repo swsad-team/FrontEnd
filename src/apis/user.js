@@ -38,7 +38,6 @@ export async function getUserInfo(userId = 2) {
   const id = userId ? userId : ''
   try {
     const respones = await instance.get(`${prefix}/${id}`)
-    console.log()
     return respones.data
   } catch (error) {
     return null

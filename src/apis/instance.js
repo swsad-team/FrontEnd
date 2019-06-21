@@ -6,13 +6,17 @@ const instance = axios.create({
   withCredentials: true
 })
 
+axios.defaults.baseURL = process.env.API_ROOT
+
 instance.interceptors.request.use(
   config => {
     let authorization = config.headers.authorization || ''
     const jwtToken =  localStorage.getItem('JWT_TOKEN')
     if (jwtToken) {
       authorization += ` Bearer ${jwtToken}`
+      
     }
+    console.log(config)
     return {...config, headers: {...config.headers, authorization}}
   }
 )
