@@ -1,6 +1,6 @@
 import instance from './instance'
 
-const prefix = 'api/users'
+const prefix = '/users'
 
 /**
  * 用户登陆
