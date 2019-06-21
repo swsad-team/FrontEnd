@@ -1,19 +1,22 @@
 import React from 'react'
 import TaskListContainer from './TaskListContainer'
+import { taskApi } from '../apis';
 
 function AllTaskList() {
-  const filters = ['个人发布', '组织发布', '可参加']
-  const sorters = ['悬赏金', '时间']
-  const getTaskFunc = () =>
-    new Promise(resolve => {
-      setTimeout(() => {
-        resolve(__tasks__)
-      }, 1000)
-    })
+  const getTaskFunc = async (filters, sorter, page) => {
+    __tasks__ = await taskApi.getAllTasks(
+      page, 
+      10, 
+      filters.map(val => filtersOption[val]), 
+      sortersOption[sorter]
+    )
+    return __tasks__
+  }
+
   return (
     <TaskListContainer
-      optFilters={filters}
-      optSorters={sorters}
+      optFilters={Object.keys(filtersOption)}
+      optSorters={Object.keys(sortersOption)}
       getTask={getTaskFunc}
     />
   )
@@ -35,8 +38,15 @@ const __task__ = {
 }
 
 let __tasks__ = []
-for (let i = 0; i < 10; i++) {
-  __tasks__.push(__task__)
+
+const filtersOption =  {
+  个人发布: 'personal',
+  组织发布: 'organizational',
+  可参加: 'participable'
+}
+const sortersOption =  {
+  悬赏金: 'coin',
+  时间: 'time',
 }
 
 export default AllTaskList
