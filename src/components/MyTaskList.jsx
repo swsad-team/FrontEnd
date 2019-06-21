@@ -4,9 +4,9 @@ import { taskApi } from '../apis';
 
 export function MyTaskList_Publish() {
   const getTaskFunc = async (filters, sorter, page) => {
-    return await taskApi.getAllTasks(
+    return await taskApi.getPublishTasks(
       page, 
-      10, 
+      10,
       filters.map(val => filtersOption[val]), 
       sortersOption[sorter]
     )
@@ -22,7 +22,7 @@ export function MyTaskList_Publish() {
 
 export function MyTaskList_Join() {
   const getTaskFunc = async (filters, sorter, page) => {
-    return await taskApi.getAllTasks(
+    return await taskApi.getParticipateTasks(
       page, 
       10, 
       filters.map(val => filtersOption[val]), 
@@ -39,7 +39,7 @@ export function MyTaskList_Join() {
 }
 export function MyTaskList_Over() {
   const getTaskFunc = async (filters, sorter, page) => {
-    return await taskApi.getAllTasks(
+    return await taskApi.getEndedTasks(
       page, 
       10, 
       filters.map(val => filtersOption[val]), 
@@ -64,3 +64,4 @@ const sortersOption =  {
   悬赏金: 'coin',
   时间: 'time',
 }
+
