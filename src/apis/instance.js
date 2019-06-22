@@ -16,8 +16,6 @@ instance.interceptors.request.use(
       authorization += ` Bearer ${jwtToken}`
       
     }
-    console.log(config)
-    console.log(config.headers.authorization)
     return {...config, headers: {...config.headers, authorization}}
   }
 )
