@@ -72,7 +72,16 @@ export async function getAllTasks(page, taskInPage, filters, sort) {
   export async function createTask(data) {
     try {
       const respones = await instance.post(`${prefix}/`, data)
-      console.log('createTask')
+      return respones.data
+    } catch (error) {
+      return error
+    }
+  }
+
+  export async function createTaskWithSurvey(data, survey) {
+    try {
+      data["question"] = survey
+      const respones = await instance.post(`${prefix}/`, data)
       return respones.data
     } catch (error) {
       return error

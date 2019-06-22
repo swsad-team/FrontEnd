@@ -84,8 +84,8 @@ const TaskBasicForm = props => {
     e.preventDefault()
     props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        // TODO: connet register api
         console.log('Received values of form: ', values)
+        console.log(isQuestionnaire)
         if(!isQuestionnaire)  {
           delete values.confirm
           const res = await taskApi.createTask(values)
@@ -96,6 +96,7 @@ const TaskBasicForm = props => {
             message.success('任务创建成功')
           }
         } else {
+          console.log('Questionnaire')
           onSubmit(values) 
         }       
       }
