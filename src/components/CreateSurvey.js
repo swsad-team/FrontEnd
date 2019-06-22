@@ -16,9 +16,9 @@ const { Option } = Select
 
 const getTypeDisplayName = type => {
   const typeToZh = {
-    radio: '单选',
-    multyCheck: '多选',
-    text: '文本'
+    single: '单选',
+    multiple: '多选',
+    fill: '文本'
   }
   return typeToZh[type] || '文本'
 }
@@ -184,7 +184,7 @@ const TitleInput = props => {
 
 const CreateQuestion = props => {
   const { onCreate } = props
-  const types = ['radio', 'multyCheck', 'text']
+  const types = ['fill', 'single', 'multiple']
   const initData = {
     title: '',
     isRequired: true,
@@ -233,7 +233,7 @@ const CreateQuestion = props => {
     if (questionData.title.trim().length < 3) {
       message.error('问题标题需要至少三个字')
     } else if (
-      questionData.type !== 'text' &&
+      questionData.type !== 'fill' &&
       questionData.options.length < 1
     ) {
       message.error('选择题至少有一个选项')
@@ -295,7 +295,7 @@ const CreateQuestion = props => {
             value={questionData.title}
             onChange={handleChange('title')}
           />
-          {questionData.type === 'text' ? null : (
+          {questionData.type === 'fill' ? null : (
             <Choices
               onChange={handleChange('options')}
               addChoiceValidate={validators['choiceAdd']}

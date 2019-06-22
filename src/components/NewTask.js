@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Steps, message } from 'antd'
 import { Link } from 'react-router-dom'
 
+import { taskApi } from '../apis';
+
 import './NewTask.css'
 
 import CreateSurvey, { SurveyList } from './CreateSurvey'
@@ -53,7 +55,23 @@ const NewTaskPage = props => {
     if (surveyData.length === 0) {
       message.error('问卷不能为空')
     } else {
+      const createTaskWithSurvey = async(basic, survey)  => {
 
+        survey = JSON.parse(JSON.stringify(survey).replace(/options/g,"option"));
+        survey = JSON.parse(JSON.stringify(survey).replace(/title/g,"questionTitle"));
+        survey = JSON.parse(JSON.stringify(survey).replace(/type/g,"questionType"));
+        console.log(survey)
+        const res = await taskApi.createTaskWithSurvey(
+          basic,
+          survey
+        )
+        if (res.errorMessage) {
+          message.error(res.errorMessage)
+        } else {         
+          message.success('任务创建成功')
+        }    
+      }
+      createTaskWithSurvey(basicValues, surveyData)
       next()
     }
   }
