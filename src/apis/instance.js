@@ -17,6 +17,7 @@ instance.interceptors.request.use(
       
     }
     console.log(config)
+    console.log(config.headers.authorization)
     return {...config, headers: {...config.headers, authorization}}
   }
 )

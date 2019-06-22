@@ -6,6 +6,8 @@ import classNames from 'classnames'
 import moment from 'moment'
 import styles from './TaskList.module.css'
 
+import { taskApi } from '../apis';
+
 function TaskList({ tasks }) {
   const [select, setSelect] = useState(null)
   const handleSelect = index => expand => {
@@ -47,9 +49,19 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
       </Descriptions>
     </div>
   )
-  const handleClick = e => {
-    console.log(e)
-    e.stopPropagation()
+  const handleClick = () => { 
+    const participateTask = async(tid)  => {
+      const res = await taskApi.participateTask(
+        tid
+      )
+      if (res.errorMessage) {
+        console.log(res.errorMessage)
+      } else {         
+        console.log('Particepate successfully')
+      }   
+    }  
+    participateTask(task.tid)
+    
   }
   const itemClass = classNames(styles.taskItem, {
     [styles.expand]: expand

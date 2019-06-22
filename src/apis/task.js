@@ -87,3 +87,12 @@ export async function getAllTasks(page, taskInPage, filters, sort) {
       return error
     }
   }
+
+  export async function participateTask(tid) {
+    try {
+      const respones = await instance.post(`${prefix}/${tid}/attend/`)
+      return respones.data
+    } catch (error) {
+      return error
+    }
+  }
