@@ -1,7 +1,7 @@
 import './index.css'
 import 'moment/locale/zh-cn'
 
-import { Icon, Layout, Menu, Spin } from 'antd'
+import { Icon, Layout, Menu, Spin, message } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
 import {
   Redirect,
@@ -10,6 +10,7 @@ import {
   Switch,
   Link
 } from 'react-router-dom'
+
 import { UserContext, UserProvider } from './context'
 
 import { LocaleProvider } from 'antd'
@@ -26,18 +27,26 @@ moment.locale('zh-cn')
 const { Header, Content } = Layout
 
 function App(props) {
-  const [loading, setLoading] = useState(false)
-  const { login, setLogin } = useContext(UserContext)
+  const [loading, setLoading] = useState(true)
+  const { login, setLogin, setUserInfo } = useContext(UserContext)
   useEffect(() => {
+    let isSubscribe = true
     async function fetchUserInfo() {
-      let user = await userApi.getUserInfo()
-      console.log(user)
-      if (user) {
-        // setLogin(true)
+      let response = await userApi.getUserInfo()
+      if (response.errorMassage) {
+        message.error(response.errorMassage)
+      } else if (isSubscribe) {
+        if ('uid' in response) {
+          setLogin(true)
+          setUserInfo(response)
+        }
       }
-      setLoading(true)
+      setLoading(false)
     }
     fetchUserInfo()
+    return () => {
+      isSubscribe = false
+    }
   }, [])
 
   const handleSignOut = async () => {
@@ -68,7 +77,7 @@ function App(props) {
           </Menu>
         </Header>
         <Content className="content">
-          {loading ? (
+          {!loading ? (
             <Switch>
               <Route
                 path="/login"
