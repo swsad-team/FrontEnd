@@ -10,18 +10,9 @@ export const UserProvider = props => {
   } = props
   const [login, setLogin] = useState(initLogin)
   const [userInfo, setUserInfo] = useState(initUserInfo)
-  console.log(login, userInfo)
   useEffect(() => {
-    let isSubscribe = true
-    if (login) {
-      // TODO: get user info
-      setUserInfo({ uid: 5, name: 'dengzijie' })
-    } else {
+    if (!login) {
       setUserInfo(initUserInfo)
-    }
-
-    return () => {
-      isSubscribe = false
     }
   }, [login])
   const userContext = {
