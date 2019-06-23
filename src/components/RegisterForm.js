@@ -14,7 +14,6 @@ import {
 import React, { useState, useContext } from 'react'
 
 import { Link } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
 import { userApi } from '../apis'
 import { UserContext } from '../context'
 

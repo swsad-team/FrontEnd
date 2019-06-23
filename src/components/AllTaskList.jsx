@@ -22,20 +22,20 @@ function AllTaskList() {
   )
 }
 
-const __task__ = {
-  tid: 1,
-  publisher: 2,
-  title: '买奶茶',
-  description: '买一fasfsfadsfasfdfafadsfadafdfafasf杯奶茶',
-  isQuestionnaire: 'false',
-  startTime: 1560517928893,
-  endTime: 1560577998893,
-  reward: 2,
-  coinPool: 40,
-  numOfPeople: 20,
-  participants: [1, 2, 3, 4, 5, 6],
-  finishers: []
-}
+// const __task__ = {
+//   tid: 1,
+//   publisher: 2,
+//   title: '买奶茶',
+//   description: '买一fasfsfadsfasfdfafadsfadafdfafasf杯奶茶',
+//   isQuestionnaire: 'false',
+//   startTime: 1560517928893,
+//   endTime: 1560577998893,
+//   reward: 2,
+//   coinPool: 40,
+//   numOfPeople: 20,
+//   participants: [1, 2, 3, 4, 5, 6],
+//   finishers: []
+// }
 
 let __tasks__ = []
 

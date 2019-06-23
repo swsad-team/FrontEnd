@@ -1,4 +1,5 @@
 import instance from './instance'
+import jwt from 'jsonwebtoken'
 
 const prefix = '/users'
 
@@ -34,12 +35,17 @@ export async function signOutUser() {
   return true
 }
 
-export async function getUserInfo(userId = 2) {
-  const id = userId ? userId : ''
-  try {
-    const respones = await instance.get(`${prefix}/${id}`)
-    return respones.data
-  } catch (error) {
-    return null
+export async function getUserInfo () {
+  const token = localStorage.getItem('JWT_TOKEN')
+  const payload = token && jwt.decode(token)
+  if (payload && 'uid' in payload) {
+    try {
+      const response = await instance.get(`${prefix}/${payload.uid}`)
+      return response.data
+    } catch (error) {
+      return error
+    }
+  } else {
+    return {}
   }
 }
