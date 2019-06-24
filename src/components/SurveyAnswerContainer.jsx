@@ -6,7 +6,7 @@ import AnswerList from './AnswerList'
 
 const displayTypes = ['问卷', '问题', '统计']
 
-const SurveyAnswerContainer = () => {
+const SurveyAnswerContainer = ({ tid }) => {
   const [isLoading, setIsLoaing] = useState(true)
   const [survey, setSurvey] = useState([])
   const [answers, setAnswers] = useState([])

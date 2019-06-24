@@ -117,3 +117,13 @@ export async function participateTask(tid) {
     return error
   }
 }
+
+
+export async function confirmTaskFinishedByUser(tid, uid) {
+  try {
+    const respones = await instance.post(`${prefix}/${tid}/finish?user=${uid}`)
+    return respones.data
+  } catch (error) {
+    return error
+  }
+}
