@@ -12,7 +12,7 @@ import AllTaskList from './AllTaskList'
 import React from 'react'
 import NewTaskPage from './NewTask'
 import FillSurveyPage from './FillSurveyPage'
-import SurveyAnswerContainer from './SurveyAnswerContainer'
+import TaskInfo from './TaskInfo';
 
 const { Sider, Content } = Layout
 
@@ -65,7 +65,7 @@ class HomePage extends React.Component {
               <Route path="/tasks/:tid/survey" component={FillSurveyPage} />
               <Route
                 path="/tasks/:tid/info"
-                component={SurveyAnswerContainer}
+                component={TaskInfo}
               />
               <Route path="/tasks/all" component={AllTaskList} />
               <Route path="/tasks/user/join" component={MyTaskList_Join} />
