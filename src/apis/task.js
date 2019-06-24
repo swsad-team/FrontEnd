@@ -13,7 +13,7 @@ export async function getTaskById(tid) {
 
 export async function getAllTasks(page, taskInPage, filters, sort) {
   try {
-    const respones = await instance.get(`${prefix}/`, {
+    const response = await instance.get(prefix, {
       params: {
         page: page,
         per_page: taskInPage,
@@ -21,7 +21,7 @@ export async function getAllTasks(page, taskInPage, filters, sort) {
         sort: sort
       }
     })
-    return respones.data
+    return response.data
   } catch (error) {
     return error
   }
@@ -35,7 +35,7 @@ export async function getPublishTasks(
   sort
 ) {
   try {
-    const respones = await instance.get(`${prefix}/`, {
+    const response = await instance.get(prefix, {
       params: {
         page: page,
         per_page: taskInPage,
@@ -44,7 +44,7 @@ export async function getPublishTasks(
         sort: sort
       }
     })
-    return respones.data
+    return response.data
   } catch (error) {
     return error
   }
@@ -58,7 +58,7 @@ export async function getParticipateTasks(
   sort
 ) {
   try {
-    const respones = await instance.get(`${prefix}/`, {
+    const response = await instance.get(prefix, {
       params: {
         page: page,
         per_page: taskInPage,
@@ -67,7 +67,7 @@ export async function getParticipateTasks(
         sort: sort
       }
     })
-    return respones.data
+    return response.data
   } catch (error) {
     return error
   }
@@ -75,7 +75,7 @@ export async function getParticipateTasks(
 
 export async function getEndedTasks(page, taskInPage, user, filters, sort) {
   try {
-    const respones = await instance.get(`${prefix}/`, {
+    const response = await instance.get(prefix, {
       params: {
         page: page,
         per_page: taskInPage,
@@ -84,7 +84,7 @@ export async function getEndedTasks(page, taskInPage, user, filters, sort) {
         sort: sort
       }
     })
-    return respones.data
+    return response.data
   } catch (error) {
     return error
   }
@@ -92,8 +92,8 @@ export async function getEndedTasks(page, taskInPage, user, filters, sort) {
 
 export async function createTask(data) {
   try {
-    const respones = await instance.post(`${prefix}/`, data)
-    return respones.data
+    const response = await instance.post(prefix, data)
+    return response.data
   } catch (error) {
     return error
   }
@@ -101,9 +101,11 @@ export async function createTask(data) {
 
 export async function createTaskWithSurvey(data, survey) {
   try {
-    data['question'] = survey
-    const respones = await instance.post(`${prefix}/`, data)
-    return respones.data
+    const response = await instance.post(prefix, {
+      ...data,
+      question: survey
+    })
+    return response.data
   } catch (error) {
     return error
   }
@@ -111,8 +113,8 @@ export async function createTaskWithSurvey(data, survey) {
 
 export async function participateTask(tid) {
   try {
-    const respones = await instance.post(`${prefix}/${tid}/attend/`)
-    return respones.data
+    const response = await instance.post(`${prefix}/${tid}/attend`)
+    return response.data
   } catch (error) {
     return error
   }
