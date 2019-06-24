@@ -5,8 +5,8 @@ const prefix = '/users'
 
 /**
  * 用户登陆
- * @param {String} phoneOrEmail 
- * @param {String} password 
+ * @param {String} phoneOrEmail
+ * @param {String} password
  */
 export async function loginUser(phoneOrEmail, password) {
   try {
@@ -21,7 +21,7 @@ export async function loginUser(phoneOrEmail, password) {
 }
 
 /**
- * 
+ *
  * @param {Object} data 用户登陆数据
  */
 export async function registerUser(data) {
@@ -41,11 +41,10 @@ export async function signOutUser() {
   return true
 }
 
-
 /**
  * 获得当前登陆用户数据
  */
-export async function getUserInfo () {
+export async function getUserInfo() {
   const token = localStorage.getItem('JWT_TOKEN')
   const payload = token && jwt.decode(token)
   if (payload && 'uid' in payload) {
@@ -66,8 +65,13 @@ export async function getUserInfo () {
  */
 export async function getUsers(uids) {
   try {
-    const query = uids.map(uid => `uid[]=${uid}`).join('&&')
-    const response = await instance.get(`${prefix}/?${query}`)
+    // const query = uids.map(uid => `uid[]=${uid}`).join('&&')
+    const response = await instance.get(`${prefix}/`, {
+      params: {
+        uid: uids,
+        
+      }
+    })
     return response.data
   } catch (error) {
     return error
