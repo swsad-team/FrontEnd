@@ -8,11 +8,14 @@ import './NewTask.css'
 
 import CreateSurvey, { SurveyList } from './CreateSurvey'
 import WrappedTaskBasicForm from './TaskBasicForm'
+import moment from 'moment'
 
 const { Step } = Steps
 
 const NewTaskPage = props => {
-  const [basicValues, setBasicValues] = useState({})
+  const [basicValues, setBasicValues] = useState({
+    endTime: moment().add(1, 'days')
+  })
   const [currentStep, setCurrentStep] = useState(0)
   const [surveyData, setSurveyData] = useState([])
 
