@@ -69,10 +69,23 @@ export async function getUsers(uids) {
     const response = await instance.get(`${prefix}/`, {
       params: {
         uid: uids,
-        
+
       }
     })
     return response.data
+  } catch (error) {
+    return error
+  }
+}
+
+
+/**
+ * 每日签到
+ */
+export async function checkIn() {
+  try {
+    const respones = await instance.post(`${prefix}/check`)
+    return respones.data
   } catch (error) {
     return error
   }
