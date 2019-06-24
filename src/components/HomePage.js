@@ -62,7 +62,7 @@ class HomePage extends React.Component {
           <div>
             <Switch>
               <Route path="/tasks/new" component={NewTaskPage} />
-              <Route path="/tasks/:tid/fill" component={FillSurveyPage} />
+              <Route path="/tasks/:tid/survey" component={FillSurveyPage} />
               <Route
                 path="/tasks/:tid/info"
                 component={SurveyAnswerContainer}
