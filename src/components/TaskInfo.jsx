@@ -1,4 +1,11 @@
-import { Button, Descriptions, Popconfirm, Skeleton, message } from 'antd'
+import {
+  Button,
+  Descriptions,
+  Popconfirm,
+  Skeleton,
+  message,
+  Tooltip,
+} from 'antd'
 
 import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
@@ -45,10 +52,11 @@ function CommonTask({ task, onComplete }) {
 
 function TaskInfo({
   match: {
-    params: { tid }
-  }
+    params: { tid },
+  },
 }) {
   const [task, setTask] = useState(null)
+  const [buttonLoading, setButtonLoading] = useState(true)
   useEffect(() => {
     let isSubscribe = true
     const fetchTask = async tid => {
@@ -57,12 +65,13 @@ function TaskInfo({
         message.error(errorMessage)
       } else if (isSubscribe) {
         setTask(task)
+        setButtonLoading(false)
       }
     }
     fetchTask(tid)
     return () => (isSubscribe = false)
   }, [tid])
-  
+
   const handleComplete = async uid => {
     const { errorMessage, ...task } = await taskApi.finishTask(tid, uid)
     if (errorMessage) {
@@ -72,12 +81,45 @@ function TaskInfo({
       message.success('操作成功！')
     }
   }
-
+  const handleCancelTask = async () => {
+    const { errorMessage, ...task } = await taskApi.cancelTask(tid)
+    if (errorMessage) {
+      message.error(errorMessage)
+    } else {
+      setTask(task)
+      message.success('操作成功！')
+    }
+  }
+  let cancelButton = (
+    <Popconfirm
+      okText="确定"
+      cancelText="取消"
+      title="确定要取消吗？"
+      onConfirm={handleCancelTask}
+    >
+      <Button loading={buttonLoading}>取消任务</Button>
+    </Popconfirm>
+  )
+  if (!task) {
+  } else if (task.participants.length !== task.finishers.length) {
+    cancelButton = (
+      <Tooltip title="仍有未完成的参加者">
+        <Button disabled>取消任务</Button>
+      </Tooltip>
+    )
+  } else if (task.isCancel) {
+    cancelButton = <Button disabled>任务已取消</Button>
+  } else if (!task.isValid) {
+    cancelButton = <Button disabled>任务已结束</Button>
+  }
   return (
     <>
       {task ? (
         <div className={styles.content}>
-          <h1 className={styles.title}>{task.title}</h1>
+          <div>
+            <h1 className={styles.title}>{task.title}</h1>
+            {cancelButton}
+          </div>
           <Descriptions className={styles.description}>
             <Descriptions.Item label="描述">
               {task.description}
@@ -111,7 +153,7 @@ function TaskInfo({
 
 CommonTask.propTypes = {
   task: PropTypes.object.isRequired,
-  onComplete: PropTypes.func.isRequired
+  onComplete: PropTypes.func.isRequired,
 }
 
 export default TaskInfo

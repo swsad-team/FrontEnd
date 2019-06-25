@@ -39,7 +39,6 @@ export async function getPublishTasks(page, taskInPage, filters, sort) {
     })
     return response.data
   } catch (error) {
-    console.log(error)
     return error
   }
 }
@@ -138,6 +137,15 @@ export async function finishTask(tid, targetUid) {
     const response = await instance.post(`${prefix}/${tid}/finish`, {
       user: targetUid,
     })
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function cancelTask(tid) {
+  try {
+    const response = await instance.post(`${prefix}/${tid}/cancel`)
     return response.data
   } catch (error) {
     return error
