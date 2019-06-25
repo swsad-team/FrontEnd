@@ -99,6 +99,15 @@ export async function createTask(data) {
   }
 }
 
+export async function getSurveyOfTask(tid) {
+  try {
+    const response = await instance.get(`${prefix}/${tid}/questionnaire`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
 export async function createTaskWithSurvey(data, survey) {
   try {
     const response = await instance.post(prefix, {
@@ -120,11 +129,20 @@ export async function participateTask(tid) {
   }
 }
 
-
-export async function confirmTaskFinishedByUser(tid, uid) {
+export async function finishSurvey(tid, answers) {
   try {
-    const respones = await instance.post(`${prefix}/${tid}/finish?user=${uid}`)
-    return respones.data
+    const response = await instance.post(`${prefix}/${tid}/finish`, answers)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+export async function finishTask(tid, targetUid) {
+  try {
+    const response = await instance.post(`${prefix}/${tid}/finish`, {
+      user: targetUid
+    })
+    return response.data
   } catch (error) {
     return error
   }
