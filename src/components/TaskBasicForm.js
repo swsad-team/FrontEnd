@@ -76,7 +76,11 @@ const { TextArea } = Input
 
 const TaskBasicForm = props => {
   const { onSubmit, formValues, onTypeChange } = props
-  const [tipTime, setTipTime] = useState('')
+  const [tipTime, setTipTime] = useState(
+    formValues.endTime instanceof moment
+      ? `任务将${formValues.endTime.fromNow(true)}后结束`
+      : ''
+  )
   const handleSubmit = e => {
     e.preventDefault()
     props.form.validateFieldsAndScroll(async (err, values) => {
