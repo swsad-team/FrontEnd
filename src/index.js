@@ -26,7 +26,7 @@ import HomePage from './components/HomePage'
 moment.locale('zh-cn')
 const { Header, Content } = Layout
 
-function App(props) {
+const App = () => {
   const [loading, setLoading] = useState(true)
   const { login, setLogin, setUserInfo } = useContext(UserContext)
   useEffect(() => {
@@ -55,13 +55,15 @@ function App(props) {
       setLogin(false)
     }
   }
- 
+
   let content = (
     <Layout className="layout">
       <Router>
         <Header className="header">
           <div className="logo">
-            <span>Earn it</span>
+            <Link to="/">
+              <span>Earn it</span>
+            </Link>
           </div>
           <Menu
             mode="horizontal"
@@ -71,9 +73,7 @@ function App(props) {
               <Link to="/tasks/new">发布任务</Link>
             </Menu.Item>
             <SubMenu title={<Icon type="user" />}>
-              <Menu.Item key="userInfo">
-                <Link to="/user">个人信息</Link>
-              </Menu.Item>
+              <Menu.Item key="userInfo">个人信息</Menu.Item>
               <Menu.Item key="logout" onClick={handleSignOut}>
                 退出
               </Menu.Item>
