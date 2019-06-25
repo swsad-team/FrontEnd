@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Form, Radio, Checkbox, Input, Button, message } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Form, Radio, Checkbox, Input, Button, message, Skeleton } from 'antd'
 import styles from './FillSurveyPage.module.css'
-
+import { taskApi } from '../apis'
+import { Link } from 'react-router-dom'
 const FillSurvey = props => {
   const { surveyData } = props
   const { getFieldDecorator } = props.form
@@ -10,7 +11,7 @@ const FillSurvey = props => {
 
   const toFormItem = question => {
     const itemMap = {
-      radio: (
+      single: (
         <Radio.Group>
           {question.options.map(item => (
             <Radio key={item} value={item}>
@@ -19,8 +20,8 @@ const FillSurvey = props => {
           ))}
         </Radio.Group>
       ),
-      multyCheck: <Checkbox.Group options={question.options} />,
-      text: <Input />
+      multiple: <Checkbox.Group options={question.options} />,
+      fill: <Input />
     }
     return (
       <Form.Item
@@ -43,19 +44,17 @@ const FillSurvey = props => {
   const handleSubmit = e => {
     e.preventDefault()
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log(values)
+      const answers = surveyData.map(q => values[q.title])
       if (!err) {
-        // TODO: connet answer api
-        console.log('Received values of form: ', values)
         setLoading(true)
-        new Promise((res, rej) => {
-          setTimeout(() => {
-            res()
-          }, 1000)
-        }).then(() => {
-          message.success('完成问卷')
-          setLoading(false)
-          setCompleted(true)
+        taskApi.finishSurvey(props.taskId, answers).then(({ errorMessage }) => {
+          if (errorMessage) {
+            message.error(errorMessage)
+          } else {
+            message.success('完成问卷')
+            setLoading(false)
+            setCompleted(true)
+          }
         })
       }
     })
@@ -66,7 +65,7 @@ const FillSurvey = props => {
       {completed ? (
         <div className={styles.feedback}>
           <p>已完成问卷</p>
-          <a href="/">返回首页</a>
+          <Link to="/">返回首页</Link>
         </div>
       ) : (
         <Form onSubmit={handleSubmit}>
@@ -89,55 +88,36 @@ const FillSurvey = props => {
 
 const WrappedFillSurvey = Form.create({ name: 'task_basic' })(FillSurvey)
 
-const FillSurveyPage = ({ match }) => {
-  const taskId = match.params.taskId
-  console.log('taskId', taskId)
-  const surveyData = [
-    {
-      title: 'radio 1',
-      isRequired: true,
-      type: 'radio',
-      options: ['1', '2', '3'],
-      answer: '1'
-    },
-    {
-      title: 'check 1',
-      isRequired: true,
-      type: 'multyCheck',
-      options: ['1', '2', '3'],
-      answer: ['1', '3']
-    },
-    {
-      title: 'text 1',
-      isRequired: true,
-      type: 'text',
-      options: []
-    },
-    {
-      title: 'radio 2',
-      isRequired: false,
-      type: 'radio',
-      options: ['1', '2', '3']
-    },
-    {
-      title: 'check 2',
-      isRequired: false,
-      type: 'multyCheck',
-      options: ['1', '2', '3', '4']
-    },
-    {
-      title: 'text 2',
-      isRequired: false,
-      type: 'text',
-      options: [],
-      answer: 'jaskldfa'
+const FillSurveyPage = ({ match, history }) => {
+  const taskId = match.params.tid
+  const [loading, setLoading] = useState(true)
+  const [survey, setSurvey] = useState(undefined)
+  useEffect(() => {
+    let isSubscribed = true
+    taskApi.getSurveyOfTask(taskId).then(survey => {
+      if (!isSubscribed) return
+      if (survey.errorMessage) {
+        message.error(survey.errorMessage)
+      } else {
+        setSurvey(survey)
+      }
+      console.log(survey)
+      setLoading(false)
+    })
+    return () => {
+      isSubscribed = false
     }
-  ]
-
+  }, [])
   return (
     <div className={styles.surveyPage}>
       <h1> 问卷: {taskId} </h1>
-      <WrappedFillSurvey surveyData={surveyData} />
+      {loading ? (
+        <Skeleton />
+      ) : survey ? (
+        <WrappedFillSurvey surveyData={survey} taskId={taskId} />
+      ) : (
+        <p>问卷加载失败</p>
+      )}
     </div>
   )
 }
