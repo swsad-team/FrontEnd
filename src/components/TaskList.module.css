@@ -82,3 +82,26 @@
 .publisher {}
 
 .date {}
+
+
+.header {
+  display: grid;
+  grid-template-columns: 10% 30% 10% 10% 20% 20%;
+  align-items: center;
+  justify-items: center;
+  padding-left: 13px;
+  padding-right: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  bottom: -10px;
+  user-select: none;
+}
+
+.header>* {
+  position: relative;
+  top: -1px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  flex-shrink: 1;
+}

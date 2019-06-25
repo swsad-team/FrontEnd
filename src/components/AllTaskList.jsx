@@ -20,8 +20,9 @@ function AllTaskList() {
 }
 
 const sortersOption = {
+  开始时间: 'startTime',
+  结束时间: 'endTime',
   悬赏金: 'coin',
-  时间: 'time',
 }
 const filtersOption = {
   个人发布: 'personal',
