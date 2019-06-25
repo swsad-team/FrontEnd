@@ -48,6 +48,7 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
   const [loading, setLoading] = useState(false)
   const [task, setTask] = useState(initialTask)
   const userContext = useContext(UserContext)
+  const { getUserByUid } = userContext
   const uid = userContext.userInfo.uid
   console.log(task)
   const attendTask = async () => {
@@ -164,7 +165,7 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
         <span className={styles.type}>
           {task.isQuestionnaire ? '调查问卷' : '其他任务'}
         </span>
-        <span className={styles.publisher}>{task.publisherId} </span>
+        <span className={styles.publisher}>{getUserByUid(task.publisherId).name} </span>
         <span className={styles.date}>
           {moment(task.endTime).format('YYYY-MM-DD HH:mm')}
         </span>
