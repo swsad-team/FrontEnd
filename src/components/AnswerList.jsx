@@ -10,9 +10,9 @@ function AnswerList ({ survey, answers, Action }) {
 
   const toItem = (question, answer) => {
     const type = question.type
-    if (type === 'text') {
+    if (type === 'fill') {
       return <p>{answer}</p>
-    } else if (type === 'radio') {
+    } else if (type === 'single') {
       return <Radio.Group value={answer}>
         {question.options.map(item => <Radio key={item} value={item}>{item}</Radio>)}
       </Radio.Group>
@@ -31,8 +31,8 @@ function AnswerList ({ survey, answers, Action }) {
         renderItem={item => {
           return (
             <List.Item>
-              {String(item.content[index]) ? (
-                toItem(survey[index], item.content[index])
+              {String(item.answers[index]) ? (
+                toItem(survey[index], item.answers[index])
               ) : (
                 <span>未填写</span>
               )}
