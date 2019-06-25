@@ -5,7 +5,6 @@ import styles from './AnswerList.module.css'
 const Panel = Collapse.Panel
 
 function AnswerList ({ survey, answers, Action }) {
-  console.log(survey, answers)
   const [keys, setKeys] = useState([])
 
   const toItem = (question, answer) => {
