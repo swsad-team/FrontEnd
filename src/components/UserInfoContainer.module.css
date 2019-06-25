@@ -1,0 +1,43 @@
+.container {
+  padding: 20px;
+}
+
+.container > h1 {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.infoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px;
+  line-height: 48px;
+  font-size: 16px;
+}
+
+.infoContainer > label {
+  flex: 12% 0 0;
+  font-weight: bold;
+  text-align: right;
+  padding-right: 15px;
+}
+
+.infoContainer > span {
+  flex: 85% 1 1;
+  border-bottom: 1px solid rgba(220, 220, 220, 1);
+}
+
+.infoContainer > span:last-child {
+  border-bottom: 0;
+}
+
+.bottomBar {
+  padding: 0 20px 20px 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.bottomBar > button {
+  flex: 20% 0 1;
+}
