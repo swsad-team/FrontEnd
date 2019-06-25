@@ -1,34 +1,107 @@
-import { Button, Descriptions, Icon } from 'antd'
-import React, { useState } from 'react'
+import { Button, Descriptions, Icon, List, message, Tooltip } from 'antd'
+import React, { useState, useContext } from 'react'
 
 import PropTypes from 'prop-types'
+import { UserContext } from '../context'
 import classNames from 'classnames'
 import moment from 'moment'
 import styles from './TaskList.module.css'
-
-import { taskApi } from '../apis';
-
-function TaskList({ tasks }) {
+import { withRouter } from 'react-router'
+import { taskApi } from '../apis'
+function TaskList({ tasks, history }) {
   const [select, setSelect] = useState(null)
   const handleSelect = index => expand => {
     if (expand) setSelect(index)
     else setSelect(null)
   }
+
   return (
     <div className={styles.taskList}>
-      {tasks.map((val, i) => (
-        <TaskItem
-          key={i}
-          task={val}
-          expand={select === i}
-          onSelect={handleSelect(i)}
-        />
-      ))}
+      <List
+        itemLayout="horizontal"
+        dataSource={tasks}
+        renderItem={(item, i) => (
+          <WrappedTaskItem
+            history={history}
+            key={i}
+            task={item}
+            expand={select === i}
+            onSelect={handleSelect(i)}
+          />
+        )}
+      />
     </div>
   )
 }
 
-function TaskItem({ task, onSelect, onClick, expand = false }) {
+function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
+  const [loading, setLoading] = useState(false)
+  const [task, setTask] = useState(initialTask)
+  const userContext = useContext(UserContext)
+  // const { uid } = userContext.userInfo
+  const uid = userContext.userInfo.uid
+  const attendTask = async () => {
+    setLoading(true)
+    taskApi.participateTask(task.tid).then(task => {
+      if (task.errorMessage) {
+        message.error(task.errorMessage)
+      } else {
+        setTask(task)
+        message.success('成功参加')
+      }
+      setLoading(false)
+    })
+  }
+
+  let button = (
+    <Button
+      type="primary"
+      onClick={e => {
+        e.stopPropagation()
+        attendTask()
+      }}
+      loading={loading}
+    >
+      GET
+    </Button>
+  )
+  if (task.publisherId === uid) {
+    button = (
+      <Button
+        onClick={e => {
+          e.stopPropagation()
+          history.push(`/tasks/${task.tid}/info`)
+        }}
+      >
+        查看任务
+      </Button>
+    )
+  } else if (
+    task.participants.length === task.numOfPeople &&
+    task.endTime > Date.now()
+  ) {
+    button = <Button disabled>已结束</Button>
+  } else if (task.finishers.includes(uid)) {
+    button = <Button disabled>已完成</Button>
+  } else if (task.participants.includes(uid) && task.isQuestionnaire) {
+    button = (
+      <Button
+        type="primary"
+        onClick={e => {
+          e.stopPropagation()
+          history.push(`/tasks/${task.tid}/survey`)
+        }}
+      >
+        填写问卷
+      </Button>
+    )
+  } else if (task.participants.includes(uid) && !task.isQuestionnaire) {
+    button = (
+      <Tooltip title="等待发起者确认任务完成">
+        <Button disabled>参加中</Button>
+      </Tooltip>
+    )
+  }
   const expandContent = (
     <div className={styles.expandContent}>
       <Descriptions>
@@ -49,27 +122,9 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
       </Descriptions>
     </div>
   )
-  const handleClick = () => { 
-    const participateTask = async(tid)  => {
-      const res = await taskApi.participateTask(
-        tid
-      )
-      if (res.errorMessage) {
-        console.log(res.errorMessage)
-      } else {         
-        console.log('Particepate successfully')
-      }   
-    }  
-    participateTask(task.tid)
-    
-  }
   const itemClass = classNames(styles.taskItem, {
     [styles.expand]: expand
   })
-  const getButton = <Button onClick={handleClick}>GET</Button>
-  // const endButton = <Button disabled>已结束</Button>
-  // const attendButton = <Button disabled>已参加</Button>
-  // const joinButton = <Button disabled>已完成</Button>
   return (
     <div className={itemClass}>
       <div className={styles.info} onClick={e => onSelect(!expand)}>
@@ -81,16 +136,18 @@ function TaskItem({ task, onSelect, onClick, expand = false }) {
         <span className={styles.type}>
           {task.isQuestionnaire ? '调查问卷' : '其他任务'}
         </span>
-        <span className={styles.publisher}>{task.publisher} </span>
+        <span className={styles.publisher}>{task.publisherId} </span>
         <span className={styles.date}>
           {moment(task.endTime).format('YYYY-MM-DD HH:mm')}
         </span>
-        {getButton}
+        {button}
       </div>
       {expand ? expandContent : null}
     </div>
   )
 }
+
+const WrappedTaskItem = withRouter(TaskItem)
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
