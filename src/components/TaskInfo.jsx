@@ -62,6 +62,7 @@ function TaskInfo({
     fetchTask(tid)
     return () => (isSubscribe = false)
   }, [tid])
+  
   const handleComplete = async uid => {
     const { errorMessage, ...task } = await taskApi.finishTask(tid, uid)
     if (errorMessage) {
