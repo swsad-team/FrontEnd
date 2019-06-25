@@ -12,7 +12,8 @@ import AllTaskList from './AllTaskList'
 import React from 'react'
 import NewTaskPage from './NewTask'
 import FillSurveyPage from './FillSurveyPage'
-import TaskInfo from './TaskInfo'
+import TaskInfo from './TaskInfo';
+import UserInfoContainer from './UserInfoContainer'
 
 const { Sider, Content } = Layout
 
@@ -72,7 +73,7 @@ class HomePage extends React.Component {
                 component={MyTaskList_Publish}
               />
               <Route path="/tasks/:tid" component={MyTaskList_Publish} />
-
+              <Route path="/user" component={UserInfoContainer} />
               <Route path="/" component={AllTaskList} />
             </Switch>
           </div>
