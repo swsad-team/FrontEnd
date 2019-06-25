@@ -6,15 +6,12 @@ import {
   DatePicker,
   InputNumber,
   Alert,
-  Input,
-  message
+  Input
 } from 'antd'
 
 import moment from 'moment'
 
 import styles from './TaskBasicForm.module.css'
-import { taskApi } from '../apis';
-
 
 const { TextArea } = Input
 
@@ -84,21 +81,7 @@ const TaskBasicForm = props => {
     e.preventDefault()
     props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
-        console.log(isQuestionnaire)
-        if(!isQuestionnaire)  {
-          delete values.confirm
-          const res = await taskApi.createTask(values)
-          if (res.errorMessage) {
-            message.error(res.errorMessage)
-          } else {         
-            onSubmit(values)  
-            message.success('任务创建成功')
-          }
-        } else {
-          console.log('Questionnaire')
-          onSubmit(values) 
-        }       
+        onSubmit(values)
       }
     })
   }
@@ -187,7 +170,8 @@ const TaskBasicForm = props => {
     commonDecorators[field.type] = getFieldDecorator(field.type, field.options)
   })
 
-  const isQuestionnaire = props.form.getFieldsValue(['isQuestionnaire']).isQuestionnaire
+  const isQuestionnaire = props.form.getFieldsValue(['isQuestionnaire'])
+    .isQuestionnaire
   return (
     <div>
       <h1>任务信息</h1>
@@ -197,7 +181,14 @@ const TaskBasicForm = props => {
         </Form.Item>
         <Form.Item label="任务类型">
           {commonDecorators['isQuestionnaire'](
-            <Radio.Group onChange={e => onTypeChange({ ...props.form.getFieldsValue(), isQuestionnaire: e.target.value })}>
+            <Radio.Group
+              onChange={e =>
+                onTypeChange({
+                  ...props.form.getFieldsValue(),
+                  isQuestionnaire: e.target.value
+                })
+              }
+            >
               <Radio value={false}>普通任务</Radio>
               <Radio value={true}>问卷</Radio>
             </Radio.Group>
@@ -214,7 +205,14 @@ const TaskBasicForm = props => {
               onChange={handleDueTimeChange}
             />
           )}
-          {tipTime && <Alert style={{width: '200px'}} message={tipTime} type="info" showIcon />}
+          {tipTime && (
+            <Alert
+              style={{ width: '200px' }}
+              message={tipTime}
+              type="info"
+              showIcon
+            />
+          )}
         </Form.Item>
         <Form.Item label="悬赏">
           {commonDecorators['reward'](<InputNumber min={1} suffix="金币" />)}
@@ -227,15 +225,12 @@ const TaskBasicForm = props => {
         </Form.Item> */}
         <Form.Item label="任务详情">
           {commonDecorators['description'](
-            <TextArea
-              autosize={{ minRows: 2, maxRows: 10 }}
-              maxLength={1000}
-            />
+            <TextArea autosize={{ minRows: 2, maxRows: 10 }} maxLength={1000} />
           )}
         </Form.Item>
         <Form.Item className={styles.bottomBar}>
           <Button type="primary" htmlType="submit">
-            {isQuestionnaire ? '继续填写': '发布任务'}
+            {isQuestionnaire ? '继续填写' : '发布任务'}
           </Button>
         </Form.Item>
       </Form>
