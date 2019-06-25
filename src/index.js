@@ -71,8 +71,12 @@ function App(props) {
               <Link to="/tasks/new">发布任务</Link>
             </Menu.Item>
             <SubMenu title={<Icon type="user" />}>
-              <Menu.Item key="userInfo">个人信息</Menu.Item>
-              <Menu.Item key="logout" onClick={handleSignOut}>退出</Menu.Item>
+              <Menu.Item key="userInfo">
+                <Link to="/user">个人信息</Link>
+              </Menu.Item>
+              <Menu.Item key="logout" onClick={handleSignOut}>
+                退出
+              </Menu.Item>
             </SubMenu>
           </Menu>
         </Header>
