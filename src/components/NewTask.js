@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
-import { Card, Steps, message } from 'antd'
+import { Steps, message } from 'antd'
 import { Link } from 'react-router-dom'
+
+import { taskApi } from '../apis'
 
 import './NewTask.css'
 
 import CreateSurvey, { SurveyList } from './CreateSurvey'
 import WrappedTaskBasicForm from './TaskBasicForm'
+import moment from 'moment'
 
 const { Step } = Steps
 
 const NewTaskPage = props => {
-  const [basicValues, setBasicValues] = useState({})
+  const [basicValues, setBasicValues] = useState({
+    endTime: moment().add(1, 'days')
+  })
   const [currentStep, setCurrentStep] = useState(0)
   const [surveyData, setSurveyData] = useState([])
 
@@ -24,12 +29,21 @@ const NewTaskPage = props => {
 
   const handleBasicSubmit = values => {
     setBasicValues(values)
-    // TODO: do something
-    next()
+    if (!values.isQuestionnaire) {
+      taskApi.createTask(values).then(({ errorMessage }) => {
+        if (errorMessage) {
+          message.error(errorMessage)
+        } else {
+          message.success('任务创建成功')
+          next()
+        }
+      })
+    } else {
+      next()
+    }
   }
 
   const handleTypeChange = values => {
-    console.log(values)
     setBasicValues(values)
   }
 
@@ -45,7 +59,6 @@ const NewTaskPage = props => {
   }
 
   const handleRemoveQuestion = index => {
-    console.log('remove')
     setSurveyData(surveyData.filter((item, _index) => _index !== index))
   }
 
@@ -53,8 +66,16 @@ const NewTaskPage = props => {
     if (surveyData.length === 0) {
       message.error('问卷不能为空')
     } else {
-
-      next()
+      taskApi
+        .createTaskWithSurvey(basicValues, surveyData)
+        .then(({ errorMessage }) => {
+          if (errorMessage) {
+            message.error(errorMessage)
+          } else {
+            message.success('任务创建成功')
+            next()
+          }
+        })
     }
   }
 
@@ -86,7 +107,7 @@ const NewTaskPage = props => {
     title: '完成',
     content: (
       <div>
-        {basicValues.isSurvey ? (
+        {basicValues.isQuestionnaire ? (
           <>
             <h1>问卷内容</h1>
             <SurveyList dataSource={surveyData} />
@@ -100,7 +121,7 @@ const NewTaskPage = props => {
     )
   }
 
-  const steps = basicValues.isSurvey
+  const steps = basicValues.isQuestionnaire
     ? [basciPage, surveyPage, confirmPage]
     : [basciPage, confirmPage]
 

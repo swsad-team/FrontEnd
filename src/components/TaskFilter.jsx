@@ -11,28 +11,29 @@ function TaskFilter({
   sorts = [],
   selectedFilters = [],
   selectedSort = null,
-  onChange
+  onChange,
 }) {
   const handleChange = ({ f = selectedFilters, s = selectedSort }) => {
     onChange({
       filters: f,
-      sort: s
+      sort: s,
     })
   }
   const checkZone = (
     <>
       {filters.map((val, i) => (
         <Checkbox
+          className={styles.checkBox}
           key={i}
           checked={selectedFilters.includes(val)}
           onChange={e => {
             if (e.target.checked) {
               handleChange({
-                f: selectedFilters.concat(val)
+                f: selectedFilters.concat(val),
               })
             } else {
               handleChange({
-                f: selectedFilters.filter(v => v !== val)
+                f: selectedFilters.filter(v => v !== val),
               })
             }
           }}
@@ -46,10 +47,11 @@ function TaskFilter({
     <div>
       排序：
       <Select
+        defaultValue={selectedSort}
         className={styles.selector}
         onChange={val => {
           handleChange({
-            s: val
+            s: val,
           })
         }}
       >
@@ -73,7 +75,7 @@ TaskFilter.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.string),
   sorts: PropTypes.arrayOf(PropTypes.string),
   selectedFilters: PropTypes.arrayOf(PropTypes.string),
-  selectedSort: PropTypes.string
+  selectedSort: PropTypes.string,
 }
 
 export default TaskFilter

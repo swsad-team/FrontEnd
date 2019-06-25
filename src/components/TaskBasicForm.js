@@ -1,91 +1,90 @@
-import React, { useState, forwardRef } from 'react'
+import React, { useState } from 'react'
 import {
   Form,
   Button,
-  Card,
   Radio,
   DatePicker,
   InputNumber,
   Alert,
-  Input,
-  List
+  Input
 } from 'antd'
 
 import moment from 'moment'
-import CheckAllBox from './CheckAllBox'
 
 import styles from './TaskBasicForm.module.css'
 
 const { TextArea } = Input
 
-let LimitForm = ({ value = [], onChange }, ref) => {
-  const options = ['男', '女', '其他']
-  const [limits, setLimits] = useState(value)
-  const [checkedList, setCheckedList] = useState([])
-  const [grade, setGrade] = useState(null)
-  const handleClick = () => {
-    const newLimit = { gender: checkedList, grade: grade }
-    if (!(newLimit.gender.length || grade)) {
-      return
-    }
-    const flag = limits.find(item => {
-      return (
-        item.gender.toString() === newLimit.gender.toString() &&
-        item.grade === newLimit.grade
-      )
-    })
-    if (!flag && onChange) {
-      onChange(limits.concat(newLimit))
-      setLimits(limits.concat(newLimit))
-      setCheckedList([])
-      setGrade(null)
-    }
-  }
+// let LimitForm = ({ value = [], onChange }, ref) => {
+//   const options = ['男', '女', '其他']
+//   const [limits, setLimits] = useState(value)
+//   const [checkedList, setCheckedList] = useState([])
+//   const [grade, setGrade] = useState(null)
+//   const handleClick = () => {
+//     const newLimit = { gender: checkedList, grade: grade }
+//     if (!(newLimit.gender.length || grade)) {
+//       return
+//     }
+//     const flag = limits.find(item => {
+//       return (
+//         item.gender.toString() === newLimit.gender.toString() &&
+//         item.grade === newLimit.grade
+//       )
+//     })
+//     if (!flag && onChange) {
+//       onChange(limits.concat(newLimit))
+//       setLimits(limits.concat(newLimit))
+//       setCheckedList([])
+//       setGrade(null)
+//     }
+//   }
 
-  return (
-    <div ref={ref}>
-      <span>
-        <label>性别:</label>
-        <CheckAllBox
-          withCheckAll={true}
-          options={options}
-          checkedList={checkedList}
-          onChange={setCheckedList}
-        />
-        <label>学号前缀:</label>
-        <InputNumber
-          min={1}
-          value={grade}
-          max={Math.pow(10, 10) - 1}
-          onChange={setGrade}
-        />
-        <Button onClick={handleClick}>添加</Button>
-      </span>
-      {limits.length !== 0 && (
-        <List
-          dataSource={limits}
-          renderItem={item => (
-            <List.Item>
-              性别:{item.gender.join('/')} 学号前缀:{item.grade}{' '}
-            </List.Item>
-          )}
-        />
-      )}
-    </div>
-  )
-}
+//   return (
+//     <div ref={ref}>
+//       <span>
+//         <label>性别:</label>
+//         <CheckAllBox
+//           withCheckAll={true}
+//           options={options}
+//           checkedList={checkedList}
+//           onChange={setCheckedList}
+//         />
+//         <label>学号前缀:</label>
+//         <InputNumber
+//           min={1}
+//           value={grade}
+//           max={Math.pow(10, 10) - 1}
+//           onChange={setGrade}
+//         />
+//         <Button onClick={handleClick}>添加</Button>
+//       </span>
+//       {limits.length !== 0 && (
+//         <List
+//           dataSource={limits}
+//           renderItem={item => (
+//             <List.Item>
+//               性别:{item.gender.join('/')} 学号前缀:{item.grade}{' '}
+//             </List.Item>
+//           )}
+//         />
+//       )}
+//     </div>
+//   )
+// }
 
-LimitForm = forwardRef(LimitForm)
+// LimitForm = forwardRef(LimitForm)
 
 const TaskBasicForm = props => {
   const { onSubmit, formValues, onTypeChange } = props
-  const [tipTime, setTipTime] = useState('')
+  const [tipTime, setTipTime] = useState(
+    formValues.endTime instanceof moment
+      ? `任务将${formValues.endTime.fromNow(true)}后结束`
+      : ''
+  )
   const handleSubmit = e => {
     e.preventDefault()
-    props.form.validateFieldsAndScroll((err, values) => {
+    props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        // TODO: connet register api
-        console.log('Received values of form: ', values)
         onSubmit(values)
       }
     })
@@ -117,13 +116,13 @@ const TaskBasicForm = props => {
       }
     },
     {
-      type: 'isSurvey',
+      type: 'isQuestionnaire',
       options: {
         initialValue: false
       }
     },
     {
-      type: 'dueTime',
+      type: 'endTime',
       options: {
         rules: [
           {
@@ -140,7 +139,7 @@ const TaskBasicForm = props => {
       }
     },
     {
-      type: 'maximumParticipators',
+      type: 'numOfPeople',
       options: {
         initialValue: 1
       }
@@ -150,9 +149,9 @@ const TaskBasicForm = props => {
       options: {}
     },
     {
-      type: 'taskDescription',
+      type: 'description',
       options: {
-        initialValue: formValues['taskDescription'],
+        initialValue: formValues['description'],
         rules: [
           {
             required: true,
@@ -175,7 +174,8 @@ const TaskBasicForm = props => {
     commonDecorators[field.type] = getFieldDecorator(field.type, field.options)
   })
 
-  const isSurvey = props.form.getFieldsValue(['isSurvey']).isSurvey
+  const isQuestionnaire = props.form.getFieldsValue(['isQuestionnaire'])
+    .isQuestionnaire
   return (
     <div>
       <h1>任务信息</h1>
@@ -184,15 +184,22 @@ const TaskBasicForm = props => {
           {commonDecorators['title'](<Input type="text" />)}
         </Form.Item>
         <Form.Item label="任务类型">
-          {commonDecorators['isSurvey'](
-            <Radio.Group onChange={e => onTypeChange({ ...props.form.getFieldsValue(), isSurvey: e.target.value })}>
+          {commonDecorators['isQuestionnaire'](
+            <Radio.Group
+              onChange={e =>
+                onTypeChange({
+                  ...props.form.getFieldsValue(),
+                  isQuestionnaire: e.target.value
+                })
+              }
+            >
               <Radio value={false}>普通任务</Radio>
               <Radio value={true}>问卷</Radio>
             </Radio.Group>
           )}
         </Form.Item>
         <Form.Item label="截至时间">
-          {commonDecorators['dueTime'](
+          {commonDecorators['endTime'](
             <DatePicker
               format="YYYY-MM-DD HH:mm"
               showTime={{
@@ -202,28 +209,32 @@ const TaskBasicForm = props => {
               onChange={handleDueTimeChange}
             />
           )}
-          {tipTime && <Alert message={tipTime} type="info" showIcon />}
+          {tipTime && (
+            <Alert
+              style={{ width: '200px' }}
+              message={tipTime}
+              type="info"
+              showIcon
+            />
+          )}
         </Form.Item>
         <Form.Item label="悬赏">
           {commonDecorators['reward'](<InputNumber min={1} suffix="金币" />)}
         </Form.Item>
         <Form.Item label="最多参与人数">
-          {commonDecorators['maximumParticipators'](<InputNumber min={1} />)}
+          {commonDecorators['numOfPeople'](<InputNumber min={1} />)}
         </Form.Item>
         {/* <Form.Item label="额外限制">
           {commonDecorators['limits'](<LimitForm />)}
         </Form.Item> */}
         <Form.Item label="任务详情">
-          {commonDecorators['taskDescription'](
-            <TextArea
-              autosize={{ minRows: 2, maxRows: 10 }}
-              maxLength={1000}
-            />
+          {commonDecorators['description'](
+            <TextArea autosize={{ minRows: 2, maxRows: 10 }} maxLength={1000} />
           )}
         </Form.Item>
         <Form.Item className={styles.bottomBar}>
           <Button type="primary" htmlType="submit">
-            {isSurvey ? '继续填写': '发布任务'}
+            {isQuestionnaire ? '继续填写' : '发布任务'}
           </Button>
         </Form.Item>
       </Form>

@@ -7,7 +7,7 @@ const SurveyWithAnswer = ({ survey, answer }) => {
   const toAnswer = (question, answer) => {
 
     const itemMap = {
-      radio: () => (
+      single: () => (
         <Radio.Group value={answer}>
           {question.options.map(item => (
             <Radio key={item} value={item}>
@@ -16,10 +16,10 @@ const SurveyWithAnswer = ({ survey, answer }) => {
           ))}
         </Radio.Group>
       ),
-      multyCheck: () => (
+      multiple: () => (
         <Checkbox.Group value={answer} options={question.options} />
       ),
-      text: () => <p className={styles.text}> {answer || '未填写'}</p>
+      fill: () => <p className={styles.text}> {answer || '未填写'}</p>
     }
 
     return (
@@ -35,10 +35,14 @@ const SurveyWithAnswer = ({ survey, answer }) => {
 
   return (
     <div className={styles.formContainer}>
-      <h1>{'填写人: 匿名'}</h1>
-      {survey.map((item, index) => (
-        toAnswer(item, answer.content[index])
-      ))}
+      {answer ? (
+        <>
+          <h1>{'填写人: 匿名'}</h1>
+          {survey.map((item, index) => toAnswer(item, answer.answers[index]))}
+        </>
+      ) : (
+        <h1>暂无内容</h1>
+      )}
     </div>
   )
 }

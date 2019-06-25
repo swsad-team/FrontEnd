@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Icon, Input, Button, Checkbox, Card } from 'antd'
+import { Form, Icon, Input, Button, Checkbox, Card, message } from 'antd'
 import './LoginForm.css'
 import { userApi } from '../apis'
 import { UserContext } from '../context';
@@ -13,13 +13,15 @@ const LoginForm = props => {
     props.form.validateFields(async (err, {username, password}) => {
       if (!err) {
         setLoaded(false)
-        const data = await userApi.loginUser(username, password)
+        const response = await userApi.loginUser(username, password)
         setLoaded(true)
-        if (data) {
+        if (response.errorMessage) {
+          message.error(response.errorMessage)
+        } else {
+          localStorage.setItem('JWT_TOKEN', response)
           setLogin(true)
+          message.success('成功登陆')
         }
-      } else {
-
       }
     })
   }
@@ -58,6 +60,7 @@ const LoginForm = props => {
             type="primary"
             htmlType="submit"
             className="login-form-button"
+            loading={loaded}
           >
             登陆
           </Button>

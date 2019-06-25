@@ -19,22 +19,21 @@
 }
 
 .info {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 10% 30% 10% 10% 20% 20%;
   align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
+  justify-items: center;
 }
 
 .info>* {
-  margin-right: 10px;
   position: relative;
   top: -1px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  flex-shrink: 1;
 }
 
-.info>*:last-child {
-  margin-right: 0;
-}
 
 .taskList {
   display: flex;
@@ -43,7 +42,7 @@
 
 .expand {
   overflow: hidden;
-  height: 200px;
+  height: 160px;
 }
 
 .expandContent {
@@ -52,7 +51,7 @@
   padding-right: 40px;
   padding-top: 10px;
   height: 160px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 
@@ -64,7 +63,11 @@
   margin-right: 5px;
 }
 
-.title {}
+.title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
 .type {
   border: 1px solid rgba(30, 80, 135, 0.6);
@@ -79,3 +82,26 @@
 .publisher {}
 
 .date {}
+
+
+.header {
+  display: grid;
+  grid-template-columns: 10% 30% 10% 10% 20% 20%;
+  align-items: center;
+  justify-items: center;
+  padding-left: 13px;
+  padding-right: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  bottom: -10px;
+  user-select: none;
+}
+
+.header>* {
+  position: relative;
+  top: -1px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  flex-shrink: 1;
+}

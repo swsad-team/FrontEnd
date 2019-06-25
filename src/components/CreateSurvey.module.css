@@ -1,4 +1,5 @@
 .bottomBar {
+  margin-top: auto;
   display: flex;
 }
 
@@ -6,36 +7,127 @@
   margin-left: auto;
 }
 
-.addQuestionContainer {
-  margin: 10px auto;
+.surveyList {
+  align-items: left;
+  margin-bottom: 50px;
 }
 
-.openBtn {
-  display: block;
-  margin: auto;
-  border-radius: 16px;
-  width: 50%;
-}
-
-.addOption {
-  display: flex;
-  flex-direction: row;
-}
-
-.optionItem {
-
+.surveyList > h3 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .questionItem {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin: 0 12px 12px 0;
+  padding: 5px 8px 5px 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  background-color: rgba(240, 240, 240, 1);
+  user-select: none;
+  overflow: hidden;
 }
 
-.questionItem :last-child {
+.deleteIcon {
   margin-left: auto;
+  line-height: 24px;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  right: -40px;
+  color: rgba(0, 0, 0, 0);
+  transition: right 0s cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s,
+    color 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.questionItem > label {
+.questionItem:hover > .deleteIcon {
+  color: rgba(0, 0, 0, 0.6);
+  right: 10px;
+  transition: color 0.2s cubic-bezier(0.075, 0.82, 0.165, 1) 0s, right 0.2s;
+}
+
+.content > span > label {
   margin-left: 10px;
   font-weight: bold;
+}
+
+.content {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 80%;
+  line-height: 32px;
+}
+
+.content > span {
+  height: 32px;
+  line-height: 32px;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.addQuestionContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.taskModalBody > div {
+  margin-bottom: 4px;
+}
+
+.openBtn {
+  margin: auto;
+  color: white;
+  text-align: center;
+  width: 80%;
+}
+
+.openBtn > button {
+  width: 80%;
+}
+
+.addOption {
+  display: flex;
+  align-items: center;
+  line-height: 48px;
+  height: 48px;
+}
+
+.addOption > button {
+  flex: 0 0 auto;
+  margin-left: 5px;
+  margin-right: 1px;
+}
+
+
+.optionItem {
+  display: flex;
+  flex-direction: row;
+  line-height: 32px;
+  padding-left: 8px;
+  margin-bottom: 4px;
+}
+
+.optionItem > label {
+  font-weight: bold;
+}
+
+.optionItem > :nth-child(2) {
+  max-width: 80%;
+  overflow-wrap: break-word;
+}
+
+.optionItem > i {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin-left: auto;
+  cursor: pointer;
 }
