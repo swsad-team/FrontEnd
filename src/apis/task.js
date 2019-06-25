@@ -108,6 +108,15 @@ export async function getSurveyOfTask(tid) {
   }
 }
 
+export async function getAnswersOfTask(tid) {
+  try {
+    const response = await instance.get(`${prefix}/${tid}/answers`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
 export async function createTaskWithSurvey(data, survey) {
   try {
     const response = await instance.post(prefix, {
