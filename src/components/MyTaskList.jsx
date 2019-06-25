@@ -5,7 +5,7 @@ import { taskApi } from '../apis'
 export function MyTaskList_Publish() {
   const filtersOption = {
     问卷: 'questionnaire',
-    任务: 'mission'
+    任务: 'mission',
   }
   const getTaskFunc = async (filters, sorter, page) => {
     return await taskApi.getPublishTasks(
@@ -29,7 +29,8 @@ export function MyTaskList_Join() {
     个人发布: 'personal',
     组织发布: 'organizational',
     问卷: 'questionnaire',
-    任务: 'mission'
+    任务: 'mission',
+    待确认: 'waitConfirm',
   }
   const getTaskFunc = async (filters, sorter, page) => {
     return await taskApi.getParticipateTasks(
@@ -68,9 +69,10 @@ export function MyTaskList_Over() {
 const filtersOption = {
   个人发布: 'personal',
   组织发布: 'organizational',
-  可参加: 'participable'
+  可参加: 'participable',
 }
 const sortersOption = {
+  开始时间: 'startTime',
   悬赏金: 'coin',
-  时间: 'time'
+  结束时间: 'endTime',
 }

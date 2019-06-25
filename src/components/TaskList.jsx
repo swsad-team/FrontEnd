@@ -18,6 +18,16 @@ function TaskList({ tasks, history }) {
   return (
     <div className={styles.taskList}>
       <List
+        header={
+          <div className={styles.header}>
+            <span>悬赏金</span>
+            <span>标题</span>
+            <span>类型</span>
+            <span>发布者</span>
+            <span>开始时间</span>
+            <span>操作</span>
+          </div>
+        }
         itemLayout="horizontal"
         dataSource={tasks}
         renderItem={(item, i) => (
@@ -38,8 +48,8 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
   const [loading, setLoading] = useState(false)
   const [task, setTask] = useState(initialTask)
   const userContext = useContext(UserContext)
-  // const { uid } = userContext.userInfo
   const uid = userContext.userInfo.uid
+  console.log(task)
   const attendTask = async () => {
     setLoading(true)
     taskApi.participateTask(task.tid).then(task => {
@@ -65,7 +75,25 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
       GET
     </Button>
   )
-  if (task.publisherId === uid) {
+  if (
+    task.publisherId === uid &&
+    task.participants.length > task.finishers.length &&
+    !task.isQuestionnaire
+  ) {
+    button = (
+      <Tooltip title="存在未完成的参加者">
+        <Button
+          type="primary"
+          onClick={e => {
+            e.stopPropagation()
+            history.push(`/tasks/${task.tid}/info`)
+          }}
+        >
+          待确认
+        </Button>
+      </Tooltip>
+    )
+  } else if (task.publisherId === uid) {
     button = (
       <Button
         onClick={e => {
@@ -123,14 +151,14 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
     </div>
   )
   const itemClass = classNames(styles.taskItem, {
-    [styles.expand]: expand
+    [styles.expand]: expand,
   })
   return (
     <div className={itemClass}>
       <div className={styles.info} onClick={e => onSelect(!expand)}>
         <span className={styles.reward}>
           <Icon theme="filled" type="pay-circle" />
-          {3}
+          {task.reward}
         </span>
         <span className={styles.title}>{task.title}</span>
         <span className={styles.type}>
@@ -151,7 +179,7 @@ const WrappedTaskItem = withRouter(TaskItem)
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 }
 
 export default TaskList

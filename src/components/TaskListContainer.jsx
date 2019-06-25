@@ -11,7 +11,9 @@ const pageMax = 10
 function TaskListContiner({ optFilters, optSorters, getTask }) {
   const [page, setPage] = useState(1)
   const [filters, setFilters] = useState([])
-  const [sorter, setSorter] = useState(null)
+  const [sorter, setSorter] = useState(
+    optSorters.length !== 0 ? optSorters[0] : null
+  )
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(null)
@@ -78,7 +80,7 @@ function TaskListContiner({ optFilters, optSorters, getTask }) {
     <div className={styles.content}>
       {headerZone}
       {loading ? (
-        Array(pageMax)
+        Array(3)
           .fill(1)
           .map((_, index) => (
             <div className={styles.skeletonItem} key={index}>
@@ -96,7 +98,7 @@ function TaskListContiner({ optFilters, optSorters, getTask }) {
 TaskListContiner.propTypes = {
   optFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
   optSorters: PropTypes.arrayOf(PropTypes.string).isRequired,
-  getTask: PropTypes.func.isRequired
+  getTask: PropTypes.func.isRequired,
 }
 
 export default TaskListContiner
