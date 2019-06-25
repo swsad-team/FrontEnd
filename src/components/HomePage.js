@@ -4,7 +4,7 @@ import { Icon, Layout, Menu } from 'antd'
 import {
   MyTaskList_Join,
   MyTaskList_Over,
-  MyTaskList_Publish
+  MyTaskList_Publish,
 } from './MyTaskList'
 import { NavLink, Route, Switch } from 'react-router-dom'
 
@@ -67,7 +67,7 @@ class HomePage extends React.Component {
               <Route path="/tasks/:tid/info" component={TaskInfo} />
               <Route path="/tasks/all" component={AllTaskList} />
               <Route path="/tasks/user/join" component={MyTaskList_Join} />
-              <Route path="/tasks/user/finish" component={MyTaskList_Over} />
+              <Route path="/tasks/user/over" component={MyTaskList_Over} />
               <Route
                 path="/tasks/user/publish"
                 component={MyTaskList_Publish}
