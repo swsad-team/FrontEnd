@@ -32,7 +32,7 @@ export const SurveyList = props => {
     <div className={styles.surveyList}>
       {dataSource.length !== 0 ? (
         dataSource.map((item, index) => (
-          <div className={styles.questionItem}>
+          <div className={styles.questionItem} key={item.title}>
             <span className={styles.content}>
               <span>
                 <label>问题{index + 1}: </label>
@@ -87,7 +87,7 @@ const Choices = props => {
           <div>
             {choices.map((item, index) => {
               return (
-                <div className={styles.optionItem}>
+                <div className={styles.optionItem} key={index}>
                   <label>{`选项${index + 1}: `}</label>
                   <span>{item}</span>
                   <Icon
