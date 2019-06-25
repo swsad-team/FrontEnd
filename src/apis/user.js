@@ -10,11 +10,11 @@ const prefix = '/users'
  */
 export async function loginUser(phoneOrEmail, password) {
   try {
-    const respones = await instance.post(`${prefix}/login`, {
+    const response = await instance.post(`${prefix}/login`, {
       account: phoneOrEmail,
       password
     })
-    return respones.data
+    return response.data
   } catch (error) {
     return error
   }
@@ -26,8 +26,8 @@ export async function loginUser(phoneOrEmail, password) {
  */
 export async function registerUser(data) {
   try {
-    const respones = await instance.post(`${prefix}/`, data)
-    return respones.data
+    const response = await instance.post(`${prefix}/`, data)
+    return response.data
   } catch (e) {
     return e
   }
@@ -84,8 +84,17 @@ export async function getUsers(uids) {
  */
 export async function checkIn() {
   try {
-    const respones = await instance.post(`${prefix}/check`)
-    return respones.data
+    const response = await instance.post(`${prefix}/check`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function updateUserInfo(uid, body) {
+  try {
+    const response = await instance.patch(`${prefix}/${uid}`, body)
+    return response.data
   } catch (error) {
     return error
   }
