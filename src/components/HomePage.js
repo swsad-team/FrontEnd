@@ -12,7 +12,7 @@ import AllTaskList from './AllTaskList'
 import React from 'react'
 import NewTaskPage from './NewTask'
 import FillSurveyPage from './FillSurveyPage'
-import TaskInfo from './TaskInfo';
+import TaskInfo from './TaskInfo'
 
 const { Sider, Content } = Layout
 
@@ -47,13 +47,13 @@ class HomePage extends React.Component {
               }
             >
               <Menu.Item key="5">
-                <NavLink to="/tasks/mine/publish">我发布的</NavLink>
+                <NavLink to="/tasks/user/publish">我发布的</NavLink>
               </Menu.Item>
               <Menu.Item key="6">
-                <NavLink to="/tasks/mine/join">我参与的</NavLink>
+                <NavLink to="/tasks/user/join">我参与的</NavLink>
               </Menu.Item>
               <Menu.Item key="7">
-                <NavLink to="/tasks/mine/over">已结束</NavLink>
+                <NavLink to="/tasks/user/over">已结束</NavLink>
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -63,10 +63,7 @@ class HomePage extends React.Component {
             <Switch>
               <Route path="/tasks/new" component={NewTaskPage} />
               <Route path="/tasks/:tid/survey" component={FillSurveyPage} />
-              <Route
-                path="/tasks/:tid/info"
-                component={TaskInfo}
-              />
+              <Route path="/tasks/:tid/info" component={TaskInfo} />
               <Route path="/tasks/all" component={AllTaskList} />
               <Route path="/tasks/user/join" component={MyTaskList_Join} />
               <Route path="/tasks/user/finish" component={MyTaskList_Over} />

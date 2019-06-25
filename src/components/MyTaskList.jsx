@@ -1,67 +1,76 @@
 import React from 'react'
 import TaskListContainer from './TaskListContainer'
-import { taskApi } from '../apis';
+import { taskApi } from '../apis'
 
 export function MyTaskList_Publish() {
+  const filtersOption = {
+    问卷: 'questionnaire',
+    任务: 'mission'
+  }
   const getTaskFunc = async (filters, sorter, page) => {
     return await taskApi.getPublishTasks(
-      page, 
+      page,
       10,
-      filters.map(val => filtersOption[val]), 
+      filters.map(val => filtersOption[val]),
       sortersOption[sorter]
     )
   }
-    return (
-      <TaskListContainer
-        optFilters={Object.keys(filtersOption)}
-        optSorters={Object.keys(sortersOption)}
-        getTask={getTaskFunc}
-      />
-    )
+  return (
+    <TaskListContainer
+      optFilters={Object.keys(filtersOption)}
+      optSorters={Object.keys(sortersOption)}
+      getTask={getTaskFunc}
+    />
+  )
 }
 
 export function MyTaskList_Join() {
+  const filtersOption = {
+    个人发布: 'personal',
+    组织发布: 'organizational',
+    问卷: 'questionnaire',
+    任务: 'mission'
+  }
   const getTaskFunc = async (filters, sorter, page) => {
     return await taskApi.getParticipateTasks(
-      page, 
-      10, 
-      filters.map(val => filtersOption[val]), 
+      page,
+      10,
+      filters.map(val => filtersOption[val]),
       sortersOption[sorter]
     )
   }
-    return (
-      <TaskListContainer
-        optFilters={Object.keys(filtersOption)}
-        optSorters={Object.keys(sortersOption)}
-        getTask={getTaskFunc}
-      />
-    )
+  return (
+    <TaskListContainer
+      optFilters={Object.keys(filtersOption)}
+      optSorters={Object.keys(sortersOption)}
+      getTask={getTaskFunc}
+    />
+  )
 }
 export function MyTaskList_Over() {
   const getTaskFunc = async (filters, sorter, page) => {
     return await taskApi.getEndedTasks(
-      page, 
-      10, 
-      filters.map(val => filtersOption[val]), 
+      page,
+      10,
+      filters.map(val => filtersOption[val]),
       sortersOption[sorter]
     )
   }
-    return (
-      <TaskListContainer
-        optFilters={Object.keys(filtersOption)}
-        optSorters={Object.keys(sortersOption)}
-        getTask={getTaskFunc}
-      />
-    )
+  return (
+    <TaskListContainer
+      optFilters={Object.keys(filtersOption)}
+      optSorters={Object.keys(sortersOption)}
+      getTask={getTaskFunc}
+    />
+  )
 }
 
-const filtersOption =  {
+const filtersOption = {
   个人发布: 'personal',
   组织发布: 'organizational',
   可参加: 'participable'
 }
-const sortersOption =  {
+const sortersOption = {
   悬赏金: 'coin',
-  时间: 'time',
+  时间: 'time'
 }
-
