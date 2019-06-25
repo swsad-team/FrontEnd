@@ -62,13 +62,13 @@ function TaskInfo({
     fetchTask(tid)
     return () => (isSubscribe = false)
   }, [tid])
-
-  const handleComplete = async (uid) => {
-    const { errorMessage, ...data } = await taskApi.confirmTaskFinishedByUser(tid, uid)
+  const handleComplete = async uid => {
+    const { errorMessage, ...task } = await taskApi.finishTask(tid, uid)
     if (errorMessage) {
       message.error(errorMessage)
     } else {
-      console.log(data)
+      setTask(task)
+      message.success('操作成功！')
     }
   }
 
