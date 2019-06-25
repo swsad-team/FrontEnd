@@ -23,6 +23,7 @@ function TaskFilter({
     <>
       {filters.map((val, i) => (
         <Checkbox
+          className={styles.checkBox}
           key={i}
           checked={selectedFilters.includes(val)}
           onChange={e => {

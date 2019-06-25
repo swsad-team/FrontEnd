@@ -1,4 +1,8 @@
-.checkZone {}
+.checkBox {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
 .selector {
   width: 120px;

@@ -6,6 +6,8 @@ import TaskFilter from './TaskFilter'
 import TaskList from './TaskList'
 import styles from './TaskListContainer.module.css'
 
+const pageMax = 10
+
 function TaskListContiner({ optFilters, optSorters, getTask }) {
   const [page, setPage] = useState(1)
   const [filters, setFilters] = useState([])
@@ -19,7 +21,11 @@ function TaskListContiner({ optFilters, optSorters, getTask }) {
     setLoading(true)
     getTask(filters, sorter, page).then(tasks => {
       if (isSubscribed) {
-        setTasks(tasks)
+        if (Array.isArray(tasks)) {
+          setTasks(tasks)
+        } else {
+          setTasks([])
+        }
         setLoading(false)
       }
     })
@@ -60,18 +66,25 @@ function TaskListContiner({ optFilters, optSorters, getTask }) {
         上一页
       </Button>
       {`第${page}页`}
-      <Button onClick={() => setPage(page + 1)}>下一页</Button>
+      <Button
+        onClick={() => setPage(page + 1)}
+        disabled={(tasks && tasks.length === 0) || tasks.length < pageMax}
+      >
+        下一页
+      </Button>
     </div>
   )
   return (
     <div className={styles.content}>
       {headerZone}
       {loading ? (
-        Array(10).fill(
-          <div className={styles.skeletonItem}>
-            <Skeleton title={{ width: '90%' }} paragraph={false} />
-          </div>
-        )
+        Array(pageMax)
+          .fill(1)
+          .map((_, index) => (
+            <div className={styles.skeletonItem} key={index}>
+              <Skeleton title={{ width: '90%' }} paragraph={false} />
+            </div>
+          ))
       ) : (
         <TaskList tasks={tasks} />
       )}
