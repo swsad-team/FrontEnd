@@ -198,7 +198,7 @@ const RegistrationForm = props => {
     {
       type: 'gender',
       options: {
-        initialValue: 'others'
+        initialValue: 'other'
       }
     },
     {
@@ -268,7 +268,7 @@ const RegistrationForm = props => {
           <Radio.Group>
             <Radio value="male">男</Radio>
             <Radio value="female">女</Radio>
-            <Radio value="others">其他</Radio>
+            <Radio value="other">其他</Radio>
           </Radio.Group>
         )}
       </Form.Item>
