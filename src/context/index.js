@@ -2,7 +2,9 @@ import React, { createContext, useState, useEffect, useCallback } from 'react'
 
 import { userApi } from '../apis'
 
-export const UserContext = createContext({})
+const UserContext = createContext({})
+
+export { UserContext }
 
 const delayFetch = {
   timer: null,
