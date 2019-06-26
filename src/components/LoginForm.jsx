@@ -7,7 +7,7 @@ import { UserContext } from '../context'
 
 const LoginForm = props => {
   const [loaded, setLoaded] = useState(false)
-  const { userInfo, setUserInfo } = useContext(UserContext)
+  const { setUserInfo } = useContext(UserContext)
   const { setLogin } = useContext(UserContext)
   const handleSubmit = e => {
     e.preventDefault()
@@ -37,7 +37,7 @@ const LoginForm = props => {
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('username', {
-            rules: [{ required: true, message: '请输入邮箱或电话' }],
+            rules: [{ required: true, message: '请输入邮箱或电话' }]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -47,7 +47,7 @@ const LoginForm = props => {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: '请输入密码' }],
+            rules: [{ required: true, message: '请输入密码' }]
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -59,7 +59,7 @@ const LoginForm = props => {
         <Form.Item>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: true
           })(<Checkbox>记住我</Checkbox>)}
           <Button
             type="primary"
