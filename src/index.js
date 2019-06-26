@@ -58,7 +58,7 @@ const App = () => {
     }
   }
   const handleDailyCheck = async () => {
-    const { errorMessage, check } = await userApi.check()
+    const { errorMessage } = await userApi.check()
     if (errorMessage) {
       message.error(errorMessage)
     } else {
