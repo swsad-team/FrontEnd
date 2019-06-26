@@ -42,9 +42,15 @@ const RegistrationForm = props => {
         if (res.errorMessage) {
           message.error(res.errorMessage)
         } else {
-          message.success('注册成功, 已自动登陆')
-          setLogin(true)
-          setUserInfo(res)
+          const response = await userApi.loginUser(values['email'], values['password'])
+          if (response.errorMessage) {
+            message.success('注册成功')
+          } else {
+            localStorage.setItem('JWT_TOKEN', response)
+            message.success('注册成功, 已自动登陆')
+            setUserInfo(res)
+            setLogin(true)
+          }
         }
       }
     })
