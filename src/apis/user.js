@@ -68,8 +68,7 @@ export async function getUsers(uids) {
     // const query = uids.map(uid => `uid[]=${uid}`).join('&&')
     const response = await instance.get(`${prefix}/`, {
       params: {
-        uid: uids,
-
+        uid: uids
       }
     })
     return response.data
@@ -77,7 +76,6 @@ export async function getUsers(uids) {
     return error
   }
 }
-
 
 /**
  * 每日签到
@@ -94,6 +92,15 @@ export async function checkIn() {
 export async function updateUserInfo(uid, body) {
   try {
     const response = await instance.patch(`${prefix}/${uid}`, body)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
+
+export async function check() {
+  try {
+    const response = await instance.post(`${prefix}/check`)
     return response.data
   } catch (error) {
     return error

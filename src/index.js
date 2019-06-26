@@ -34,8 +34,8 @@ const App = () => {
     async function fetchUserInfo() {
       let response = await userApi.getUserInfo()
       if (isSubscribe) {
-        if (response.errorMassage) {
-          message.error(response.errorMassage)
+        if (response.errorMessage) {
+          message.error(response.errorMessage)
         } else {
           if ('uid' in response) {
             setLogin(true)
@@ -57,7 +57,14 @@ const App = () => {
       setLogin(false)
     }
   }
-
+  const handleDailyCheck = async () => {
+    const { errorMessage, check } = await userApi.check()
+    if (errorMessage) {
+      message.error(errorMessage)
+    } else {
+      message.success(`每日签到 金币 +50`)
+    }
+  }
   let content = (
     <Layout className="layout">
       <Router>
@@ -78,6 +85,9 @@ const App = () => {
               <SubMenu title={<Icon type="user" />}>
                 <Menu.Item key="userInfo">
                   <Link to="/user">个人信息</Link>
+                </Menu.Item>
+                <Menu.Item key="check" onClick={handleDailyCheck}>
+                  每日签到
                 </Menu.Item>
                 <Menu.Item key="logout" onClick={handleSignOut}>
                   退出
