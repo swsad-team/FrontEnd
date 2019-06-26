@@ -33,15 +33,17 @@ const App = () => {
     let isSubscribe = true
     async function fetchUserInfo() {
       let response = await userApi.getUserInfo()
-      if (response.errorMassage) {
-        message.error(response.errorMassage)
-      } else if (isSubscribe) {
-        if ('uid' in response) {
-          setLogin(true)
-          setUserInfo(response)
+      if (isSubscribe) {
+        if (response.errorMassage) {
+          message.error(response.errorMassage)
+        } else {
+          if ('uid' in response) {
+            setLogin(true)
+            setUserInfo(response)
+          }
         }
+        setLoading(false)
       }
-      setLoading(false)
     }
     fetchUserInfo()
     return () => {

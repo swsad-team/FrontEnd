@@ -22,14 +22,16 @@ const SurveyAnswerContainer = ({ tid }) => {
         taskApi.getSurveyOfTask(tid),
         taskApi.getAnswersOfTask(tid)
       ])
-      if (survey.errorMessage || answers.errorMessage) {
-        survey.errorMessage && message.error(survey.errorMessage)
-        answers.errorMessage && message.error(answers.errorMessage)
-      } else if (isSubscribed) {
-        setSurvey(survey)
-        setAnswers(answers)
+      if (isSubscribed) {
+        if (survey.errorMessage || answers.errorMessage) {
+          survey.errorMessage && message.error(survey.errorMessage)
+          answers.errorMessage && message.error(answers.errorMessage)
+        } else {
+          setSurvey(survey)
+          setAnswers(answers)
+        }
+        setIsLoaing(false)
       }
-      setIsLoaing(false)
     }
     fetchSurveyAndAnswers(tid)
     return () => (isSubscribed = false)
@@ -63,7 +65,6 @@ const SurveyAnswerContainer = ({ tid }) => {
       setVisible(true)
     }
 
-
     const Action = ({ item }) => (
       <Button type="link" onClick={() => handleView(item)}>
         查看问卷
@@ -71,7 +72,13 @@ const SurveyAnswerContainer = ({ tid }) => {
     )
     return (
       <>
-        <AnswerList survey={survey} answers={answers} Action={Action} keys={keys} onChange={(keys) => setKeys(keys)}/>
+        <AnswerList
+          survey={survey}
+          answers={answers}
+          Action={Action}
+          keys={keys}
+          onChange={keys => setKeys(keys)}
+        />
         <Modal
           visible={visible}
           onCancel={() => setVisible(false)}
