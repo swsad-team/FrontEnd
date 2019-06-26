@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom'
 import { Form, Icon, Input, Button, Checkbox, Card, message } from 'antd'
 import './LoginForm.css'
 import { userApi } from '../apis'
-import { UserContext } from '../context';
+import { UserContext } from '../context'
 
 const LoginForm = props => {
   const [loaded, setLoaded] = useState(false)
-  const {setLogin} = useContext(UserContext)
+  const { setLogin } = useContext(UserContext)
   const handleSubmit = e => {
     e.preventDefault()
-    props.form.validateFields(async (err, {username, password}) => {
+    props.form.validateFields(async (err, { username, password }) => {
       if (!err) {
-        setLoaded(false)
-        const response = await userApi.loginUser(username, password)
         setLoaded(true)
+        const response = await userApi.loginUser(username, password)
+        setLoaded(false)
         if (response.errorMessage) {
           message.error(response.errorMessage)
         } else {
@@ -32,7 +32,7 @@ const LoginForm = props => {
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('username', {
-            rules: [{ required: true, message: '请输入邮箱或电话' }]
+            rules: [{ required: true, message: '请输入邮箱或电话' }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -42,7 +42,7 @@ const LoginForm = props => {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: '请输入密码' }]
+            rules: [{ required: true, message: '请输入密码' }],
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -54,7 +54,7 @@ const LoginForm = props => {
         <Form.Item>
           {getFieldDecorator('remember', {
             valuePropName: 'checked',
-            initialValue: true
+            initialValue: true,
           })(<Checkbox>记住我</Checkbox>)}
           <Button
             type="primary"
