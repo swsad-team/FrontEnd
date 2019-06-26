@@ -105,7 +105,7 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
       </Button>
     )
   } else if (
-    task.participants.length === task.numOfPeople ||
+    task.finishers.length === task.numOfPeople ||
     new Date(task.endTime) < Date.now()
   ) {
     button = <Button disabled>已结束</Button>
