@@ -129,6 +129,12 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
         <Button disabled>参加中</Button>
       </Tooltip>
     )
+  } else if (task.participants.length === task.numOfPeople) {
+    button = (
+      <Tooltip title="参加人数已足够">
+        <Button disabled>已满员</Button>
+      </Tooltip>
+    )
   }
   const expandContent = (
     <div className={styles.expandContent}>
