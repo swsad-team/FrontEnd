@@ -65,22 +65,24 @@ const App = () => {
               <span>Earn it</span>
             </Link>
           </div>
-          <Menu
-            mode="horizontal"
-            style={{ lineHeight: '64px', float: 'right' }}
-          >
-            <Menu.Item>
-              <Link to="/tasks/new">发布任务</Link>
-            </Menu.Item>
-            <SubMenu title={<Icon type="user" />}>
-              <Menu.Item key="userInfo">
-                <Link to="/user">个人信息</Link>
+          {login && (
+            <Menu
+              mode="horizontal"
+              style={{ lineHeight: '64px', float: 'right' }}
+            >
+              <Menu.Item>
+                <Link to="/tasks/new">发布任务</Link>
               </Menu.Item>
-              <Menu.Item key="logout" onClick={handleSignOut}>
-                退出
-              </Menu.Item>
-            </SubMenu>
-          </Menu>
+              <SubMenu title={<Icon type="user" />}>
+                <Menu.Item key="userInfo">
+                  <Link to="/user">个人信息</Link>
+                </Menu.Item>
+                <Menu.Item key="logout" onClick={handleSignOut}>
+                  退出
+                </Menu.Item>
+              </SubMenu>
+            </Menu>
+          )}
         </Header>
         <Content className="content">
           {!loading ? (
