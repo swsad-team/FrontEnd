@@ -7,6 +7,7 @@ import { UserContext } from '../context'
 
 const LoginForm = props => {
   const [loaded, setLoaded] = useState(false)
+  const { userInfo, setUserInfo } = useContext(UserContext)
   const { setLogin } = useContext(UserContext)
   const handleSubmit = e => {
     e.preventDefault()
@@ -19,6 +20,10 @@ const LoginForm = props => {
           message.error(response.errorMessage)
         } else {
           localStorage.setItem('JWT_TOKEN', response)
+          const { errorMessage, ...userInfo } = await userApi.getUserInfo()
+          if (!errorMessage) {
+            setUserInfo(userInfo)
+          }
           setLogin(true)
           message.success('成功登陆')
         }
