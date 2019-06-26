@@ -82,6 +82,7 @@ function TaskInfo({
     }
   }
   const handleCancelTask = async () => {
+    setButtonLoading(true)
     const { errorMessage, ...task } = await taskApi.cancelTask(tid)
     if (errorMessage) {
       message.error(errorMessage)
@@ -89,6 +90,7 @@ function TaskInfo({
       setTask(task)
       message.success('操作成功！')
     }
+    setButtonLoading(false)
   }
   let cancelButton = (
     <Popconfirm
