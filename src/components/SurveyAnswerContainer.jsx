@@ -12,6 +12,7 @@ const SurveyAnswerContainer = ({ tid }) => {
   const [survey, setSurvey] = useState([])
   const [answers, setAnswers] = useState([])
   const [displayType, setDisplayType] = useState(displayTypes[0])
+  const [keys, setKeys] = useState([])
 
   useEffect(() => {
     let isSubscribed = true
@@ -56,10 +57,12 @@ const SurveyAnswerContainer = ({ tid }) => {
   const DisplayAnswers = () => {
     const [visible, setVisible] = useState(false)
     const [viewAnswer, setViewAnswer] = useState({})
+
     const handleView = item => {
       setViewAnswer(item)
       setVisible(true)
     }
+
 
     const Action = ({ item }) => (
       <Button type="link" onClick={() => handleView(item)}>
@@ -68,7 +71,7 @@ const SurveyAnswerContainer = ({ tid }) => {
     )
     return (
       <>
-        <AnswerList survey={survey} answers={answers} Action={Action} />
+        <AnswerList survey={survey} answers={answers} Action={Action} keys={keys} onChange={(keys) => setKeys(keys)}/>
         <Modal
           visible={visible}
           onCancel={() => setVisible(false)}

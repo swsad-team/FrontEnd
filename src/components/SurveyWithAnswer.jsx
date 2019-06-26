@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Radio, Checkbox, Form } from 'antd'
 
 import styles from './SurveyWithAnswer.module.css'
+import { UserContext } from '../context';
 
 const SurveyWithAnswer = ({ survey, answer }) => {
+
+  const {getUserByUid} = useContext(UserContext)
+
   const toAnswer = (question, answer) => {
 
     const itemMap = {
@@ -37,7 +41,7 @@ const SurveyWithAnswer = ({ survey, answer }) => {
     <div className={styles.formContainer}>
       {answer ? (
         <>
-          <h1>{'填写人: 匿名'}</h1>
+          <h1>{`填写人: ${getUserByUid(answer.uid).name || ''}`}</h1>
           {survey.map((item, index) => toAnswer(item, answer.answers[index]))}
         </>
       ) : (

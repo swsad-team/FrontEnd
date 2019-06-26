@@ -1,20 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { List, Collapse, Radio, Checkbox } from 'antd'
 import styles from './AnswerList.module.css'
+import { UserContext } from '../context'
 
 const Panel = Collapse.Panel
 
-function AnswerList ({ survey, answers, Action }) {
-  const [keys, setKeys] = useState([])
-
+function AnswerList({ survey, answers, Action, keys, onChange }) {
+  const { getUserByUid } = useContext(UserContext)
   const toItem = (question, answer) => {
     const type = question.type
     if (type === 'fill') {
       return <p>{answer}</p>
     } else if (type === 'single') {
-      return <Radio.Group value={answer}>
-        {question.options.map(item => <Radio key={item} value={item}>{item}</Radio>)}
-      </Radio.Group>
+      return (
+        <Radio.Group value={answer}>
+          {question.options.map(item => (
+            <Radio key={item} value={item}>
+              {item}
+            </Radio>
+          ))}
+        </Radio.Group>
+      )
     } else {
       return <Checkbox.Group options={question.options} value={answer} />
     }
@@ -36,7 +42,7 @@ function AnswerList ({ survey, answers, Action }) {
                 <span>未填写</span>
               )}
               <span className={styles.author}>
-                {'填写人: 匿名 | '}
+                {`填写人: ${getUserByUid(item.uid).name || ''} | `}
                 {<Action item={item} />}
               </span>
             </List.Item>
@@ -47,7 +53,7 @@ function AnswerList ({ survey, answers, Action }) {
   }
 
   const handleChange = key => {
-    setKeys(key)
+    onChange(key)
   }
 
   const Header = ({ item }) => {
@@ -60,6 +66,7 @@ function AnswerList ({ survey, answers, Action }) {
       expandIconPosition="right"
       onChange={handleChange}
       className={styles.answersContainer}
+      activeKey={keys}
     >
       {survey.map((item, index) => (
         <Panel header={<Header item={item} />} key={item.title}>
