@@ -5,7 +5,7 @@ import styles from './SurveyAnswerContainer.module.css'
 import AnswerList from './AnswerList'
 import { taskApi } from '../apis'
 
-const displayTypes = ['问卷', '问题', '统计']
+const displayTypes = ['问卷', '问题']
 
 const SurveyAnswerContainer = ({ tid }) => {
   const [isLoading, setIsLoaing] = useState(true)
