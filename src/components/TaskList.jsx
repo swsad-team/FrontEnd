@@ -50,7 +50,6 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
   const userContext = useContext(UserContext)
   const { getUserByUid } = userContext
   const uid = userContext.userInfo.uid
-  console.log(task)
   const attendTask = async () => {
     setLoading(true)
     taskApi.participateTask(task.tid).then(task => {
@@ -158,7 +157,7 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
     </div>
   )
   const itemClass = classNames(styles.taskItem, {
-    [styles.expand]: expand,
+    [styles.expand]: expand
   })
   return (
     <div className={itemClass}>
@@ -171,7 +170,9 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
         <span className={styles.type}>
           {task.isQuestionnaire ? '调查问卷' : '其他任务'}
         </span>
-        <span className={styles.publisher}>{getUserByUid(task.publisherId).name} </span>
+        <span className={styles.publisher}>
+          {getUserByUid(task.publisherId).name}{' '}
+        </span>
         <span className={styles.date}>
           {moment(task.endTime).format('YYYY-MM-DD HH:mm')}
         </span>
@@ -186,7 +187,7 @@ const WrappedTaskItem = withRouter(TaskItem)
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClick: PropTypes.func,
+  onClick: PropTypes.func
 }
 
 export default TaskList

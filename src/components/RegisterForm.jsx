@@ -37,7 +37,6 @@ const RegistrationForm = props => {
       )
     props.form.validateFieldsAndScroll(fields, async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
         delete values.confirm
         const res = await userApi.registerUser(values)
         if (res.errorMessage) {

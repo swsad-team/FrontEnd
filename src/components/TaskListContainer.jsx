@@ -54,7 +54,6 @@ function TaskListContiner({ optFilters, optSorters, getTask }) {
         selectedFilters={filters}
         selectedSort={sorter}
         onChange={({ filters, sort }) => {
-          console.log(filters, sort)
           setFilters(filters)
           setSorter(sort)
         }}
@@ -98,7 +97,7 @@ function TaskListContiner({ optFilters, optSorters, getTask }) {
 TaskListContiner.propTypes = {
   optFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
   optSorters: PropTypes.arrayOf(PropTypes.string).isRequired,
-  getTask: PropTypes.func.isRequired,
+  getTask: PropTypes.func.isRequired
 }
 
 export default TaskListContiner

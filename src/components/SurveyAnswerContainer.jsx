@@ -17,10 +17,7 @@ const SurveyAnswerContainer = ({ tid }) => {
     let isSubscribed = true
     setIsLoaing(true)
     const fetchSurveyAndAnswers = async tid => {
-      const [
-        survey,
-        answers
-      ] = await Promise.all([
+      const [survey, answers] = await Promise.all([
         taskApi.getSurveyOfTask(tid),
         taskApi.getAnswersOfTask(tid)
       ])
@@ -28,7 +25,6 @@ const SurveyAnswerContainer = ({ tid }) => {
         survey.errorMessage && message.error(survey.errorMessage)
         answers.errorMessage && message.error(answers.errorMessage)
       } else if (isSubscribed) {
-        console.log('answers', answers)
         setSurvey(survey)
         setAnswers(answers)
       }

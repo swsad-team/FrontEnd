@@ -101,7 +101,6 @@ const FillSurveyPage = ({ match, history }) => {
       } else {
         setSurvey(survey)
       }
-      console.log(survey)
       setLoading(false)
     })
     return () => {
