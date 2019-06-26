@@ -8,17 +8,19 @@ import {
 } from 'antd'
 
 import PropTypes from 'prop-types'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import styles from './TaskInfo.module.css'
 import SurveyAnswerContainer from './SurveyAnswerContainer'
 import { taskApi } from '../apis'
+import { UserContext } from '../context';
 
 function CommonTask({ task, onComplete }) {
   const handleComplete = uid => () => onComplete(uid)
+  const { getUserByUid } = useContext(UserContext)
   const Item = ({ uid, name, isFinished }) => (
     <div className={styles.participantItem}>
-      {name}
+      <span>{name}</span>
       {isFinished ? (
         <Popconfirm
           title="此操作不可撤销"
@@ -39,12 +41,22 @@ function CommonTask({ task, onComplete }) {
       {task.participants
         .filter(uid => !task.finishers.includes(uid))
         .map((val, i) => (
-          <Item key={i} uid={val} name={val} isFinished={true} />
+          <Item
+            key={i}
+            uid={val}
+            name={getUserByUid(val).name}
+            isFinished={true}
+          />
         ))}
       {task.participants
         .filter(uid => task.finishers.includes(uid))
         .map((val, i) => (
-          <Item key={i} uid={val} name={val} isFinished={false} />
+          <Item
+            key={i}
+            uid={val}
+            name={getUserByUid(val).name}
+            isFinished={false}
+          />
         ))}
     </div>
   )
