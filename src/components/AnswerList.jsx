@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { List, Collapse, Radio, Checkbox } from 'antd'
 import styles from './AnswerList.module.css'
 import { UserContext } from '../context'
