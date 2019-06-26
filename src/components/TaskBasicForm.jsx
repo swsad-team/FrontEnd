@@ -135,12 +135,24 @@ const TaskBasicForm = props => {
     {
       type: 'reward',
       options: {
+        rules: [
+          {
+            pattern: /^\d+$/,
+            message: '悬赏金额应为自然数'
+          }
+        ],
         initialValue: 1
       }
     },
     {
       type: 'numOfPeople',
       options: {
+        rules: [
+          {
+            pattern: /^[1-9]\d*$/,
+            message: '参与人数最少为1'
+          }
+        ],
         initialValue: 1
       }
     },
