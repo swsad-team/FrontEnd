@@ -31,7 +31,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  flex-shrink: 1;
 }
 
 
@@ -64,9 +63,9 @@
 }
 
 .title {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+
+  max-width: 90%;
+
 }
 
 .type {
@@ -79,7 +78,9 @@
   color: rgba(30, 80, 135, 0.6);
 }
 
-.publisher {}
+.publisher {
+  max-width: 90%;
+}
 
 .date {}
 
