@@ -49,7 +49,7 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
   const [task, setTask] = useState(initialTask)
   const userContext = useContext(UserContext)
   const { getUserByUid } = userContext
-  const uid = userContext.userInfo.uid
+  const { uid, isOrganization } = userContext.userInfo
   const attendTask = async () => {
     setLoading(true)
     taskApi.participateTask(task.tid).then(task => {
@@ -105,12 +105,18 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
       </Button>
     )
   } else if (
-    task.participants.length === task.numOfPeople &&
-    task.endTime > Date.now()
+    task.participants.length === task.numOfPeople ||
+    new Date(task.endTime) < Date.now()
   ) {
     button = <Button disabled>已结束</Button>
   } else if (task.finishers.includes(uid)) {
     button = <Button disabled>已完成</Button>
+  } else if (isOrganization) {
+    button = (
+      <Tooltip title="组织账户无法参加">
+        <Button disabled>GET</Button>
+      </Tooltip>
+    )
   } else if (task.participants.includes(uid) && task.isQuestionnaire) {
     button = (
       <Button
@@ -174,7 +180,7 @@ function TaskItem({ task: initialTask, onSelect, expand = false, history }) {
           {getUserByUid(task.publisherId).name}{' '}
         </span>
         <span className={styles.date}>
-          {moment(task.endTime).format('YYYY-MM-DD HH:mm')}
+          {moment(task.startTime).format('YYYY-MM-DD HH:mm')}
         </span>
         {button}
       </div>
